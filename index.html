@@ -2,245 +2,677 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>데이터 분석 개념 퀴즈 5탄 (최종 점검)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>통합 생활 한자어 퀴즈 (10주차 ~ 15주차)</title>
     <style>
-        /* 기본 스타일 */
-        body { font-family: 'Malgun Gothic', sans-serif; line-height: 1.6; background-color: #f0f2f5; margin: 0; padding: 20px; }
-        .quiz-container { max-width: 900px; margin: 20px auto; padding: 30px; border: 1px solid #ccc; border-radius: 12px; background-color: #fff; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-        h2 { border-bottom: 3px solid #9b59b6; padding-bottom: 10px; color: #9b59b6; text-align: center; margin-bottom: 30px; }
-        .question { margin-bottom: 30px; padding: 20px; border: 1px solid #ddd; border-radius: 8px; background-color: #f9f9f9; }
-        .q-text { font-weight: bold; color: #333; margin-bottom: 15px; font-size: 1.1em; }
-        
-        /* 선지 스타일 */
-        .options { list-style: none; padding: 0; margin-top: 10px; }
-        .options li { margin: 8px 0; padding: 10px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s; border: 1px solid transparent; }
-        .options li:hover:not(.disabled) { background-color: #f3e5f5; border-color: #9b59b6; }
-        .options li::before { content: "\2022"; color: #9b59b6; font-weight: bold; display: inline-block; width: 1em; margin-left: -1em; }
-        .options li.disabled { cursor: default; }
-
-        /* 정답/해설 박스 스타일 */
-        .answer-reveal { margin-top: 15px; padding: 15px; border-left: 5px solid #2ecc71; background-color: #e8f8f2; color: #1a6037; border-radius: 4px; display: none; }
-        .answer-reveal .correct-answer { font-weight: bold; color: #2ecc71; margin-bottom: 5px; }
-        .answer-reveal .rationale { font-size: 0.95em; color: #555; }
-        
-        /* 선택 결과 스타일 */
-        .correct-choice { background-color: #d4edda !important; border: 1px solid #2ecc71 !important; font-weight: bold; }
-        .incorrect-choice { background-color: #f8d7da !important; border: 1px solid #dc3545 !important; }
-        .correct-display { background-color: #d4edda !important; border: 1px solid #2ecc71 !important; } 
-    </style>
-    <script>
-        // 각 문항의 정답을 설정합니다. (a, b, c, d)
-        const correctAnswers = {
-            'q1': 'b', // 분석의 정의
-            'q2': 'c', // ANOVA 조건
-            'q3': 'a', // 전처리 예시
-            'q4': 'd', // 연속형 특징
-            'q5': 'a', // 정규분포 비교
-            'q6': 'd', // 정형 데이터 vs 비정형 데이터
-            'q7': 'c', // 상관관계 0.9
-            'q8': 'a', // 단일 표본 t-test
-            'q9': 'b', // EDA 위치
-            'q10': 'a' // 회귀 오차 최소화
-        };
-
-        function checkAnswer(questionId, selectedChoice) {
-            const questionElement = document.getElementById(questionId);
-            const answerReveal = questionElement.querySelector('.answer-reveal');
-            const options = questionElement.querySelectorAll('.options li');
-            const correctAnswer = correctAnswers[questionId];
-            
-            // 모든 선지에 disabled 클래스 추가 및 이벤트 리스너 제거 (재선택 불가)
-            options.forEach(option => {
-                option.classList.add('disabled');
-                option.onclick = null;
-            });
-
-            // 정답/오답 표시 및 스타일 적용
-            const selectedOption = questionElement.querySelector(`li[data-choice="${selectedChoice}"]`);
-            const correctOption = questionElement.querySelector(`li[data-choice="${correctAnswer}"]`);
-
-            if (selectedChoice === correctAnswer) {
-                // 정답을 맞췄을 때
-                selectedOption.classList.add('correct-choice');
-                answerReveal.style.borderLeftColor = '#2ecc71';
-                answerReveal.style.backgroundColor = '#e8f8f2';
-            } else {
-                // 오답일 경우, 선택한 선지는 빨간색, 정답은 초록색으로 표시
-                selectedOption.classList.add('incorrect-choice');
-                correctOption.classList.add('correct-display'); 
-                
-                // 해설 박스 스타일 변경
-                answerReveal.style.borderLeftColor = '#dc3545';
-                answerReveal.style.backgroundColor = '#f8d7da';
-            }
-
-            // 해설 박스 표시
-            answerReveal.style.display = 'block';
+        body {
+            font-family: 'Malgun Gothic', sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 20px;
         }
-
-        // 페이지 로드 후, 모든 선지에 이벤트 리스너 부착
-        document.addEventListener('DOMContentLoaded', () => {
-            const questions = document.querySelectorAll('.question');
-            questions.forEach(question => {
-                const questionId = question.id;
-                const options = question.querySelectorAll('.options li');
-                options.forEach(option => {
-                    // 선지 클릭 시 checkAnswer 함수 호출
-                    option.onclick = () => {
-                        const choice = option.getAttribute('data-choice');
-                        checkAnswer(questionId, choice);
-                    };
-                });
-            });
-        });
-    </script>
+        .container {
+            max-width: 950px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        /* --- 내비게이션 및 탭 스타일 --- */
+        .week-navigation {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 5px;
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #ecf0f1;
+        }
+        .week-navigation button, .week-navigation a.btn {
+            padding: 10px 15px;
+            font-size: 0.9em;
+            background-color: #5bc0de;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .week-navigation button:hover, .week-navigation a.btn:hover {
+            background-color: #31b0d5;
+        }
+        .week-navigation .current-week {
+            background-color: #007bff;
+            font-weight: bold;
+        }
+        .week-navigation .analysis-btn {
+            background-color: #2ecc71;
+            margin-left: 15px;
+        }
+        
+        /* --- 퀴즈 섹션 및 문제 스타일 --- */
+        .quiz-section {
+            display: none; /* 초기에는 모든 퀴즈 섹션 숨김 */
+        }
+        .quiz-section.active {
+            display: block;
+        }
+        h1 {
+            color: #4a90e2;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+        .question-box {
+            background-color: #e9f7ff;
+            border: 1px solid #cceeff;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            min-height: 250px;
+        }
+        .question-box h2 {
+            font-size: 2.2em;
+            text-align: center;
+            color: #007bff;
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        .input-group {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .input-group input[type="text"] {
+            padding: 10px;
+            font-size: 1.2em;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            width: 45%;
+            text-align: center;
+        }
+        .input-group button {
+            padding: 10px 20px;
+            font-size: 1.1em;
+            background-color: #5cb85c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .input-group button:hover:not(:disabled) {
+            background-color: #4cae4c;
+        }
+        .result {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            display: none;
+        }
+        .correct {
+            border-color: #28a745;
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .incorrect {
+            border-color: #dc3545;
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .story {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px dashed #aaa;
+            font-size: 0.95em;
+            text-align: left;
+            line-height: 1.5;
+        }
+        .story strong {
+            color: #007bff;
+        }
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+        }
+        .controls button {
+            padding: 10px 25px;
+            font-size: 1em;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .controls button:hover:not(:disabled) {
+            background-color: #0056b3;
+        }
+        .controls button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        .progress {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #4a90e2;
+        }
+    </style>
 </head>
 <body>
 
-<div class="quiz-container">
-    <h2>데이터 분석 개념 퀴즈 5탄 (코드 제외)</h2>
-    <p>각 선지를 **클릭**하면 해당 문항의 정답과 해설이 바로 표시됩니다. (클릭 후 재선택 불가)</p>
+<div class="container">
+    
+    <div class="week-navigation">
+        <button id="tab-10" onclick="changeWeek(10)" class="current-week">10주차</button>
+        <button id="tab-11" onclick="changeWeek(11)">11주차</button>
+        <button id="tab-12" onclick="changeWeek(12)">12주차</button>
+        <button id="tab-13" onclick="changeWeek(13)">13주차</button>
+        <button id="tab-14" onclick="changeWeek(14)">14주차</button>
+        <button id="tab-15" onclick="changeWeek(15)">15주차</button>
+        <a href="불국사_석굴암_분석.html" class="btn analysis-btn">14주차 심층 분석</a>
+        <a href="중용_단장.html" class="btn analysis-btn">15주차 심층 분석</a>
+    </div>
 
-    <div class="question" id="q1">
-        <div class="q-text">1. 특정한 분석 모형을 활용해 데이터로부터 결과값이나 시각화를 도출하는 단계이며, 주로 정량적인 방법을 사용해 의미 있는 정보를 추출하는 활동은 무엇인가요?</div>
-        <ul class="options">
-            <li data-choice="a">a. 데이터 수집 (Data Collection)</li>
-            <li data-choice="b">b. 데이터 분석 (Data Analysis)</li>
-            <li data-choice="c">c. 데이터 해석 (Interpretation)</li>
-            <li data-choice="d">d. 시각화 (Visualization)</li>
-        </ul>
-        <div class="answer-reveal">
-            <div class="correct-answer">정답: b. 데이터 분석 (Data Analysis)</div>
-            <div class="rationale">데이터 분석은 정량적인 방법을 사용해 정보 추출 및 결과값 도출을 수행하는 단계입니다.</div>
+    <div id="quiz-10" class="quiz-section active">
+        <h1>10주차 생활 한자어 음 맞추기 퀴즈 📝</h1>
+        <div class="progress" id="progress-10"></div>
+        <div class="question-box" id="questionBox-10"></div>
+        <div class="controls">
+            <button id="prevBtn-10" onclick="prevQuestion(10)">이전</button>
+            <button id="nextBtn-10" onclick="nextQuestion(10)">다음 문제</button>
+            <button id="retryBtn-10" onclick="startQuiz(10)" style="display:none;">다시 시작</button>
         </div>
     </div>
 
-    <div class="question" id="q2">
-        <div class="q-text">2. 다음 중 One-way ANOVA 분산분석을 사용하여 평균 차이의 유의성을 검증하기 위한 조건으로 가장 적절한 것은?</div>
-        <ul class="options">
-            <li data-choice="a">a. 단일 집단이 알려진 특정 평균값과 일치하는지 검증할 때</li>
-            <li data-choice="b">b. 동일 대상의 조건 전후 변화(두 시점)를 검증할 때</li>
-            <li data-choice="c">c. 하나의 범주 변수에 따른 세 개 이상의 집단 간에 유의미한 차이가 있는지 검증할 때</li>
-            <li data-choice="d">d. 두 변수 간의 선형성이 일치하는 정도를 측정할 때</li>
-        </ul>
-        <div class="answer-reveal">
-            <div class="correct-answer">정답: c. 하나의 범주 변수에 따른 세 개 이상의 집단 간에 유의미한 차이가 있는지 검증할 때</div>
-            <div class="rationale">ANOVA는 두 집단 이상의 평균 차이를 검증할 때 사용되며, One-way는 하나의 범주 변수를 기준으로 합니다.</div>
+    <div id="quiz-11" class="quiz-section">
+        <h1>11주차 생활 한자어 음 맞추기 퀴즈 📝</h1>
+        <div class="progress" id="progress-11"></div>
+        <div class="question-box" id="questionBox-11"></div>
+        <div class="controls">
+            <button id="prevBtn-11" onclick="prevQuestion(11)">이전</button>
+            <button id="nextBtn-11" onclick="nextQuestion(11)">다음 문제</button>
+            <button id="retryBtn-11" onclick="startQuiz(11)" style="display:none;">다시 시작</button>
         </div>
     </div>
 
-    <div class="question" id="q3">
-        <div class="q-text">3. 데이터 전처리(Data Cleansing) 과정에서 수행하는 주요 작업이 아닌 것은?</div>
-        <ul class="options">
-            <li data-choice="a">a. 분석 결과를 바탕으로 가설을 검증하고 결론을 내린다.</li>
-            <li data-choice="b">b. 결측치(Missing Value)를 처리하거나 대체한다.</li>
-            <li data-choice="c">c. 중복 데이터를 관리한다.</li>
-            <li data-choice="d">d. 이상치(Outlier)를 제거하거나 보정한다.</li>
-        </ul>
-        <div class="answer-reveal">
-            <div class="correct-answer">정답: a. 분석 결과를 바탕으로 가설을 검증하고 결론을 내린다.</div>
-            <div class="rationale">가설 검증 및 결론 도출은 **데이터 해석(Interpretation)** 단계에서 수행됩니다.</div>
+    <div id="quiz-12" class="quiz-section">
+        <h1>12주차 생활 지명 한자어 음 맞추기 퀴즈 📝</h1>
+        <div class="progress" id="progress-12"></div>
+        <div class="question-box" id="questionBox-12"></div>
+        <div class="controls">
+            <button id="prevBtn-12" onclick="prevQuestion(12)">이전</button>
+            <button id="nextBtn-12" onclick="nextQuestion(12)">다음 문제</button>
+            <button id="retryBtn-12" onclick="startQuiz(12)" style="display:none;">다시 시작</button>
+        </div>
+    </div>
+    
+    <div id="quiz-13" class="quiz-section">
+        <h1>13주차 생활 한자어 음 맞추기 퀴즈 📝</h1>
+        <div class="progress" id="progress-13"></div>
+        <div class="question-box" id="questionBox-13"></div>
+        <div class="controls">
+            <button id="prevBtn-13" onclick="prevQuestion(13)">이전</button>
+            <button id="nextBtn-13" onclick="nextQuestion(13)">다음 문제</button>
+            <button id="retryBtn-13" onclick="startQuiz(13)" style="display:none;">다시 시작</button>
         </div>
     </div>
 
-    <div class="question" id="q4">
-        <div class="q-text">4. 수치형 데이터 중, 측정 가능한 범위 내에서 **임의의 실수** 값을 가지며 직접 연산이 가능한 자료형은 무엇인가요?</div>
-        <ul class="options">
-            <li data-choice="a">a. 이산형 (Discrete)</li>
-            <li data-choice="b">b. 명목형 (Nominal)</li>
-            <li data-choice="c">c. 서열형 (Ordinal)</li>
-            <li data-choice="d">d. 연속형 (Continuous)</li>
-        </ul>
-        <div class="answer-reveal">
-            <div class="correct-answer">정답: d. 연속형 (Continuous)</div>
-            <div class="rationale">연속형은 특정 범위 내의 임의의 실수 값을 가지며, 이산형은 정수 값을 가집니다.</div>
+    <div id="quiz-14" class="quiz-section">
+        <h1>14주차 건물 문화재 한자어 음 맞추기 퀴즈 📝</h1>
+        <div class="progress" id="progress-14"></div>
+        <div class="question-box" id="questionBox-14"></div>
+        <div class="controls">
+            <button id="prevBtn-14" onclick="prevQuestion(14)">이전</button>
+            <button id="nextBtn-14" onclick="nextQuestion(14)">다음 문제</button>
+            <button id="retryBtn-14" onclick="startQuiz(14)" style="display:none;">다시 시작</button>
         </div>
     </div>
 
-    <div class="question" id="q5">
-        <div class="q-text">5. 데이터를 시각화하여 비교할 때, **평균과 표준편차**를 사용하여 데이터의 중심 위치와 흩어진 정도를 파악하는 데 유용한 방법은 무엇인가요?</div>
-        <ul class="options">
-            <li data-choice="a">a. 정규 분포 (Normal Distribution) 곡선</li>
-            <li data-choice="b">b. Boxplot (상자 그림)</li>
-            <li data-choice="c">c. 산점도와 추세선</li>
-            <li data-choice="d">d. 이동평균선</li>
-        </ul>
-        <div class="answer-reveal">
-            <div class="correct-answer">정답: a. 정규 분포 (Normal Distribution) 곡선</div>
-            <div class="rationale">정규 분포 곡선은 평균을 중심으로 종 모양을 이루며, 표준편차에 따라 폭이 달라져 분포를 비교하기 쉽습니다. Boxplot은 중앙값과 사분위수를 사용합니다.</div>
+    <div id="quiz-15" class="quiz-section">
+        <h1>15주차 감정 표현 한자어 음 맞추기 퀴즈 📝</h1>
+        <div class="progress" id="progress-15"></div>
+        <div class="question-box" id="questionBox-15"></div>
+        <div class="controls">
+            <button id="prevBtn-15" onclick="prevQuestion(15)">이전</button>
+            <button id="nextBtn-15" onclick="nextQuestion(15)">다음 문제</button>
+            <button id="retryBtn-15" onclick="startQuiz(15)" style="display:none;">다시 시작</button>
         </div>
     </div>
 
-    <div class="question" id="q6">
-        <div class="q-text">6. 미리 정의된 스키마/구조를 가지며 스프레드시트나 관계형 $\text{DB}$에 저장되는 데이터와, $\text{XML, JSON}$처럼 태그나 마커로 유연한 구조를 가지는 데이터를 각각 무엇이라고 하나요?</div>
-        <ul class="options">
-            <li data-choice="a">a. 비정형 데이터 / 정형 데이터</li>
-            <li data-choice="b">b. 서열형 데이터 / 명목형 데이터</li>
-            <li data-choice="c">c. 연속형 데이터 / 이산형 데이터</li>
-            <li data-choice="d">d. 정형 데이터 / 반정형 데이터</li>
-        </ul>
-        <div class="answer-reveal">
-            <div class="correct-answer">정답: d. 정형 데이터 / 반정형 데이터</div>
-            <div class="rationale">스키마를 가진 데이터는 정형 데이터, $\text{Tag}$나 $\text{Marker}$로 유연한 구조를 가진 데이터는 반정형 데이터입니다.</div>
-        </div>
-    </div>
-
-    <div class="question" id="q7">
-        <div class="q-text">7. 두 변수 간의 관계를 산점도로 나타냈을 때, 데이터 포인트들이 우상향하는 직선 주변에 매우 가깝게 밀집되어 있다면 피어슨 상관계수($r$) 값은 대략 얼마에 가까울까요?</div>
-        <ul class="options">
-            <li data-choice="a">a. $r \approx 0.0$</li>
-            <li data-choice="b">b. $r \approx -0.9$</li>
-            <li data-choice="c">c. $r \approx 0.9$</li>
-            <li data-choice="d">d. $r \approx -0.5$</li>
-        </ul>
-        <div class="answer-reveal">
-            <div class="correct-answer">정답: c. $r \approx 0.9$</div>
-            <div class="rationale">우상향하는 관계는 양의 상관관계(1에 가까움)이며, 밀집도가 높으면 선형성이 강하므로 $r \approx 0.9$와 같이 높은 양의 값을 가집니다.</div>
-        </div>
-    </div>
-
-    <div class="question" id="q8">
-        <div class="q-text">8. 특정 제품의 시장 점유율 평균이 기존에 알려진 기준값($50\%$)과 통계적으로 유의미하게 차이가 나는지 검증하고자 합니다. 이때 가장 적절한 가설 검증 방법은 무엇인가요?</div>
-        <ul class="options">
-            <li data-choice="a">a. 단일 표본 t-test</li>
-            <li data-choice="b">b. 대응 표본 t-test</li>
-            <li data-choice="c">c. 독립 표본 t-test</li>
-            <li data-choice="d">d. One-way ANOVA</li>
-        </ul>
-        <div class="answer-reveal">
-            <div class="correct-answer">정답: a. 단일 표본 t-test</div>
-            <div class="rationale">단일 표본 t-test는 한 변수의 평균값이 **알려진 특정 평균값**과 일치하는지 검정할 때 사용됩니다.</div>
-        </div>
-    </div>
-
-    <div class="question" id="q9">
-        <div class="q-text">9. 데이터 분석의 상세 과정 8단계 중, **데이터 전처리** 이후에 수행되며 **모델링** 이전에 수행되는 단계는 무엇인가요?</div>
-        <ul class="options">
-            <li data-choice="a">a. 데이터 수집 (Data Collection)</li>
-            <li data-choice="b">b. 탐색적 데이터 분석 (EDA)</li>
-            <li data-choice="c">c. 분석 및 평가 (Analysis & Estimation)</li>
-            <li data-choice="d">d. 해석 (Interpretation)</li>
-        </ul>
-        <div class="answer-reveal">
-            <div class="correct-answer">정답: b. 탐색적 데이터 분석 (EDA)</div>
-            <div class="rationale">상세 과정 순서는 ... $\rightarrow$ 데이터 전처리 $\rightarrow$ **탐색적 분석** $\rightarrow$ 모델링 $\rightarrow$ ...입니다.</div>
-        </div>
-    </div>
-
-    <div class="question" id="q10">
-        <div class="q-text">10. 선형 회귀($y=Ax+B$) 모델을 학습시키는 과정에서 **회귀 모형과 실제 데이터 간의 오차**를 최소화하도록 하는 것이 핵심 원리입니다. 이 오차를 나타내는 용어는 무엇인가요?</div>
-        <ul class="options">
-            <li data-choice="a">a. 잔차 (Residual) 또는 오차 (Error)</li>
-            <li data-choice="b">b. 피어슨 $r$ 값</li>
-            <li data-choice="c">c. 공분산</li>
-            <li data-choice="d">d. 표준편차</li>
-        </ul>
-        <div class="answer-reveal">
-            <div class="correct-answer">정답: a. 잔차 (Residual) 또는 오차 (Error)</div>
-            <div class="rationale">회귀에서 실제 관측값과 회귀선 상의 예측값 사이의 차이를 잔차 또는 오차라고 하며, 회귀 분석은 이 잔차의 합을 최소화하는 것을 목표로 합니다.</div>
-        </div>
-    </div>
 </div>
+
+<script>
+    // ==========================================================
+    // 1. 퀴즈 데이터 정의 (각 주차별 데이터)
+    // ==========================================================
+    const allHanjaWords = {
+        10: [
+            { hanja: "黑字", answer: "흑자", meaning: "수입이 지출보다 많을 때(잉여 이익)를 의미하며, 회계 장부 기입 시 흑색 잉크로 표시하는 데서 유래했습니다." },
+            { hanja: "赤字", answer: "적자", meaning: "지출이 수입보다 많을 때(결손액)를 의미하며, 회계 장부 기입 시 적색 잉크로 표시하는 데서 유래했습니다." },
+            { hanja: "大恐慌", answer: "대공황", meaning: "크게 두렵고 다급한 경제 혼란이라는 뜻으로, 경제 혼란 현상이 세계적으로 나타나는 것입니다." },
+            { hanja: "雇用", answer: "고용", meaning: "사람의 품을 사서 쓰는 것을 말합니다. 즉, 삯을 지급하고 그 사람의 노동력을 사서 쓰는 것입니다." },
+            { hanja: "解雇", answer: "해고", meaning: "품을 사서 쓰던 사람을 벗어나게 하다’는 뜻으로, 사용자가 근로자와의 계약 관계를 일방적으로 해지하는 것입니다." },
+            { hanja: "民營化", answer: "민영화", meaning: "국영 분야를 민간에서 경영하도록 맡기는 것을 말합니다." },
+            { hanja: "不動産", answer: "부동산", meaning: "움직여서 옮길 수 없는 재산’으로, 토지, 가옥 등이 여기에 해당합니다." },
+            { hanja: "放送", answer: "방송", meaning: "매체를 통해 영상 등을 내보내는 것을 말합니다." },
+            { hanja: "政黨", answer: "정당", meaning: "정치하는 무리’라는 뜻입니다. 공동의 정치적 견해를 가지고 정권을 잡거나 국회에서 활동하는 단체입니다." },
+            { hanja: "與黨", answer: "여당", meaning: "정부의 편에서 정책을 지지하는 정당입니다. 대통령 중심제에서 국가 원수인 대통령을 배출한 당입니다." },
+            { hanja: "野黨", answer: "야당", meaning: "현재 정권을 잡지 못한 당입니다. 정부의 정책을 비판하고 견제하며 다음 대선에서 정권을 잡기 위해 노력합니다." },
+            { hanja: "與野", answer: "여야", meaning: "정권을 잡은 여당과 잡지 못한 야당을 아울러 이르는 말입니다." },
+            { hanja: "與小野大", answer: "여소야대", meaning: "국회의원 총선거에서 여당이 야당보다 의석 수를 적게 차지하게 된 정국을 말하며, 이는 대통령의 정책 집행에 차질을 줄 수 있음을 의미합니다." },
+            { hanja: "選擧", answer: "선거", meaning: "많은 사람 중 투표 행위를 통해 한 명을 뽑는 것을 말합니다." },
+            { hanja: "投票", answer: "투표", meaning: "표지에 의견을 기입하여 제출하는 행위입니다." },
+            { hanja: "公薦", answer: "공천", meaning: "정당에서 당의 입후보자를 공식적으로 추천하는 것입니다." },
+            { hanja: "下野", answer: "하야", meaning: "관직에서 물러나다’ 또는 '정계에서 물러나다’는 의미로 사용됩니다." },
+            { hanja: "彈劾", answer: "탄핵", meaning: "잘못을 바로잡기 위해 낱낱이 캐물음’을 의미하며, 국회가 고위공직자를 헌법이나 법률에 따라 파면하는 제도입니다." },
+            { hanja: "獨裁", answer: "독재", meaning: "권력을 가진 개인이나 단체가 민주적 절차 없이 단독으로 일을 처리하는 정치 형태입니다." },
+            { hanja: "輿論", answer: "여론", meaning: "많은 대중의 공통된 의견’이나 논의를 뜻합니다." },
+            { hanja: "民主主義", answer: "민주주의", meaning: "국가의 주권이 국민에게 있다는 사상입니다." },
+            { hanja: "出馬", answer: "출마", meaning: "선거에 입후보자로 나서는 것을 의미합니다." },
+            { hanja: "落馬", answer: "낙마", meaning: "선거에 입후보한 출마자가 떨어지는 것을 의미합니다." },
+            { hanja: "補闕選擧", answer: "보궐선거", meaning: "선거로 선출된 사람이 임기 중 사고 등으로 자리가 비게 되었을 때, 그 자리를 채우기 위하여 시행하는 선거입니다." },
+            { hanja: "武運", answer: "무운", meaning: "전쟁에서 이기고 지는 운수’를 뜻하며, '전쟁에서 이기기를 빌다’는 의미로 사용됩니다." },
+            { hanja: "頂上會談", answer: "정상회담", meaning: "나라의 정상(최고 우두머리)들이 모여 말을 나누는 회의입니다." },
+            { hanja: "示威", answer: "시위", meaning: "위력이나 기세를 드러내 보이는 행위입니다." },
+            { hanja: "街頭示威", answer: "가두시위", meaning: "길거리, 길 주변에서 위력이나 기세를 드러내 보이는 시위를 뜻합니다." },
+            { hanja: "聲討", answer: "성토", meaning: "소리 내어 꾸짖고 비난함’을 뜻합니다. 여러 사람이 모여 공익에 위반된 행동에 대하여 한목소리를 내는 것입니다." },
+            { hanja: "公聽會", answer: "공청회", meaning: "공적으로 의견을 듣는 모임’입니다." },
+            { hanja: "聽聞會", answer: "청문회", meaning: "어떤 문제에 대해 듣고 물어보는 모임’입니다." },
+            { hanja: "旣得權", answer: "기득권", meaning: "이미 얻은 권리라는 뜻으로, 정당한 절차를 밟아 이미 얻은 법률상 권리입니다." },
+            { hanja: "剝奪感", answer: "박탈감", meaning: "벗겨지고 빼앗겼다는 느낌’으로, 가지고 있던 것을 외부의 권력이나 힘으로 잃었을 때 느끼는 감정입니다." },
+            { hanja: "間諜", answer: "간첩", meaning: "둘 사이에서 염탐하여 상대편의 비밀을 몰래 알아내서 자기편에 제공하는 사람입니다." }
+        ],
+        11: [
+            { hanja: "衣食住", answer: "의식주", meaning: "인간 생활의 기본 3요소인 '옷, 음식, 집'을 뜻하며, 인간이 최소한의 생활을 하기 위해 보장되어야 하는 3가지 요소입니다." },
+            { hanja: "衣服", answer: "의복", meaning: "옷 종류의 총칭입니다." },
+            { hanja: "衣", answer: "의", meaning: "포괄적인 의미의 '옷'으로, 상의를 지칭하다가 옷 전체를 지칭하게 되었습니다." },
+            { hanja: "服", answer: "복", meaning: "'복장'의 의미에서 사용되는 '옷'입니다. 원래는 '복종하다'에서 (몸을) 다스리다, 옷을 입다, 보호하다는 뜻으로 파생되었습니다." },
+            { hanja: "洋襪", answer: "양말", meaning: "'서양에서 온 버선'이라는 뜻입니다." },
+            { hanja: "高捧", answer: "고봉", meaning: "곡식을 됫박에 담을 때나 밥을 공기에 '높이 쌓아 올려 담는 모양'을 의미합니다." },
+            { hanja: "神仙爐", answer: "신선로", meaning: "'신선의 화로'라는 뜻입니다. 그릇 안에 숯을 피워 다 먹을 때까지 식지 않게 하는 고급 요리입니다. 연산군 때 선비 정희량의 일화에서 유래되었습니다." },
+            { hanja: "五味子", answer: "오미자", meaning: "단맛, 신맛, 쓴맛, 짠맛, 매운맛 '다섯 가지 맛이 동시에 느껴지는 씨앗'입니다." },
+            { hanja: "堂", answer: "당", meaning: "사랑채처럼 손님을 접대하는 장소를 의미하며, 명예나 존경을 나타내는 뜻도 있습니다." },
+            { hanja: "室", answer: "실", meaning: "집주인이 잠을 자는 곳, 즉 안쪽에 있는 방을 의미합니다." },
+            { hanja: "家", answer: "가", meaning: "가족, 가문, 집안을 의미합니다." },
+            { hanja: "居室", answer: "거실", meaning: "거주하는 방이라는 뜻으로, 평소에 지내는 방입니다." },
+            { hanja: "寢室", answer: "침실", meaning: "잠을 자는 방이라는 뜻입니다." },
+            { hanja: "化粧室", answer: "화장실", meaning: "단장하는 방이라는 뜻으로, 뒷간을 이르는 말로 파생되었습니다." },
+            { hanja: "窓門", answer: "창문", meaning: "창을 낸 문이라는 뜻입니다." },
+            { hanja: "冷藏庫", answer: "냉장고", meaning: "차갑게 저장하는 창고’라는 뜻입니다. 냉동고(冷凍庫)도 '차갑게 얼리는 창고’라는 뜻입니다." },
+            { hanja: "洗濯機", answer: "세탁기", meaning: "'씻고 빠는 기계’라는 뜻입니다." },
+            { hanja: "扇風機", answer: "선풍기", meaning: "'부채처럼 바람을 일으키는 기계’라는 뜻입니다." },
+            { hanja: "乾電池", answer: "건전지", meaning: "'마른 상태의 전기 연못’이라는 뜻으로, 고체 상태의 전지입니다." },
+            { hanja: "酒煎子", answer: "주전자", meaning: "원래는 '술을 데우는 그릇’이었으나, 술이나 물을 끓이거나 데우는 그릇으로 용도가 확장되었습니다." },
+            { hanja: "匙箸", answer: "수저", meaning: "숟가락과 젓가락을 아울러 이르는 말입니다." },
+            { hanja: "竹夫人", answer: "죽부인", meaning: "여름철에 부인 대신 끌어안고 자는 대나무 기구입니다." },
+            { hanja: "謹弔", answer: "근조", meaning: "'삼가고 위로하다’는 뜻으로, 장례식에서 고인에게 조문하고 위로할 때 사용합니다." },
+            { hanja: "訃告", answer: "부고", meaning: "'죽음을 알림’을 뜻합니다." },
+            { hanja: "花環", answer: "화환", meaning: "꽃으로 만든 고리입니다. (근조화환(謹弔花環)에서 사용됨)" }
+        ],
+        12: [
+            { hanja: "地名", answer: "지명", meaning: "땅의 이름입니다. 지역의 특성, 역사적 사건, 인물 등에서 유래합니다." },
+            { hanja: "浦", answer: "포", meaning: "개울이나 물가를 뜻하며, 한강의 나루터를 이르는 지명에 사용되었습니다." },
+            { hanja: "津", answer: "진", meaning: "나루나 나루터를 뜻하며, 한강의 나루터를 이르는 지명에 사용되었습니다." },
+            { hanja: "可樂", answer: "가락", meaning: "'가히 (살기) 즐거운 곳'이라는 뜻입니다. 홍수 피해 후 주민들이 이주하며 살기 좋은 곳으로 명명했습니다." },
+            { hanja: "麻谷", answer: "마곡", meaning: "'삼 밭이 있는 골짜기'라는 뜻입니다. 옛날에 삼(麻)을 재배했던 지역이었습니다." },
+            { hanja: "新村", answer: "신촌", meaning: "'새로운 마을'이라는 뜻으로, 원래 있던 마을 옆에 새로 형성된 마을에서 유래했습니다." },
+            { hanja: "石村", answer: "석촌", meaning: "'돌이 많았던 마을' 또는 돌무지무덤(적석총)이 있던 마을이라는 뜻에서 유래합니다." },
+            { hanja: "良才", answer: "양재", meaning: "'좋은 인재가 모이는 곳'이라는 뜻으로, 어질고 재주가 있는 사람들이 많이 살던 지역에서 유래했습니다." },
+            { hanja: "會賢", answer: "회현", meaning: "'현명하고 어진 선비들이 모이는 곳'이라는 뜻입니다." },
+            { hanja: "驛三", answer: "역삼", meaning: "조선시대 공무 여행을 위한 숙소인 역참(驛站)이 있던 마을 중 세 번째(三) 마을이라는 뜻입니다." },
+            { hanja: "廣津", answer: "광진", meaning: "'넓은 나루'라는 뜻입니다. 한강 북쪽에서 남쪽으로 물자 이동을 담당했습니다." },
+            { hanja: "鷺梁津", answer: "노량진", meaning: "'백로(鷺)가 노닐던 나루터'라는 뜻입니다. 원래 이름은 '노들나루'였습니다." },
+            { hanja: "麻浦", answer: "마포", meaning: "'삼베 물가'라는 뜻이며, 우리말 '삼개(삼베+개울)'의 한자어입니다." },
+            { hanja: "漢江鎭", answer: "한강진", meaning: "원래는 한강나루(漢江津)였으나, 조선의 군영(鎭)이 있던 곳이라 한강진(漢江鎭)이 되었습니다." },
+            { hanja: "鐘閣", answer: "종각", meaning: "조선시대 인정과 파루를 치던 종이 걸려 있던 건물입니다. 현재의 보신각입니다." },
+            { hanja: "鐘路", answer: "종로", meaning: "종각에 걸린 종이 있던 곳의 거리라는 뜻입니다." },
+            { hanja: "廣興倉", answer: "광흥창", meaning: "조선시대 경기와 삼남지방에서 거둔 쌀을 보관하고 관리들의 녹봉을 지급했던 큰 창고입니다." },
+            { hanja: "東氷庫", answer: "동빙고", meaning: "조선 초기 한강 얼음을 저장하던 창고 중 동쪽(東) 창고입니다. 백관들에게 얼음을 나누어주거나 수라간에서 사용했습니다." },
+            { hanja: "西氷庫", answer: "서빙고", meaning: "조선 초기 한강 얼음을 저장하던 창고 중 서쪽(西) 창고입니다. 주로 국가 제사에 사용할 얼음을 저장했습니다." },
+            { hanja: "舍堂", answer: "사당", meaning: "마을에 큰 사당(祠堂)이 있던 곳이라는 뜻에서 유래했습니다." },
+            { hanja: "移村", answer: "이촌", meaning: "홍수 피해를 피해 옮겨갔다가(移) 다시 돌아오며 살던 마을이라는 뜻에서 유래했습니다." },
+            { hanja: "九老", answer: "구로", meaning: "아홉 노인(老)이 오래 살았던 지역이라는 뜻입니다." },
+            { hanja: "京畿", answer: "경기", meaning: "'수도 근처 5백 리까지의 땅'이라는 뜻입니다. 왕이 머무는 곳(京)을 보위하는 땅(畿)이었습니다." },
+            { hanja: "江原", answer: "강원", meaning: "강릉(江)과 원주(原)의 앞 글자를 따서 지은 이름입니다. 조선 태조 4년에 명명되었습니다." },
+            { hanja: "忠淸", answer: "충청", meaning: "충주(忠)와 청주(淸)의 앞 글자를 따서 지은 이름입니다. 왕건에게 충성을 다한 호족들의 공을 기려 명명되었습니다." },
+            { hanja: "全羅", answer: "전라", meaning: "전주(全州)와 나주(羅州)의 앞 글자를 따서 지은 이름입니다. 후삼국 통일전쟁 시기 주요 지역이었습니다." },
+            { hanja: "慶尙", answer: "경상", meaning: "경주(慶州)와 상주(尙州)의 앞 글자를 따서 지은 이름입니다." },
+            { hanja: "安城", answer: "안성", meaning: "'편안한 성'이라는 뜻입니다. 홍건적의 난 당시 위태롭지 않고 편안했던 성곽이라는 소문에서 유래했습니다." },
+            { hanja: "天安", answer: "천안", meaning: "'하늘 아래 가장 평안한 땅'이라는 뜻입니다. 후삼국 통일전쟁 시기 왕건이 명당으로 보고 명명했습니다." }
+        ],
+        13: [
+            { hanja: "宮闕", answer: "궁궐", meaning: "임금이 거처하는 집입니다." },
+            { hanja: "宮", answer: "궁", meaning: "건물이 많이 늘어선 집이며, 가옥을 의미하다가 진(秦)나라 이후 '대궐'이나 '궁전'의 의미로 정착했습니다." },
+            { hanja: "闕", answer: "궐", meaning: "원래 망루를 의미하다가, 양쪽에 담을 쌓고 문을 만들어 '대궐'이나 '대궐 문'의 의미로 확장되었습니다." },
+            { hanja: "正殿", answer: "정전", meaning: "'본이 되고 주가 되는 전각'입니다. 왕이 신하들과 조회(朝會)를 하거나, 궁궐의 중심이 되어 대례 의식 등 국가 주요 대소사를 치르던 곳입니다. (예: 경복궁의 근정전, 창덕궁의 인정전)." },
+            { hanja: "便殿", answer: "편전", meaning: "'쉬는 전각'이라는 뜻이나, 실제로는 왕의 일상적인 내부 집무실이었습니다. 임금과 신하가 정사를 행하고 경연 등을 실시하는 실질적인 근무 공간입니다." },
+            { hanja: "寢殿", answer: "침전", meaning: "왕과 왕비가 일상 생활을 하는 전각으로, 취침, 식사 등을 하며, 종친과 함께 잔치나 연회를 열기도 하던 곳입니다." },
+            { hanja: "東宮", answer: "동궁", meaning: "세자와 세자빈이 거처하던 궁입니다. 해가 뜨는 동쪽을 세자의 지위에 빗대어 춘궁(春宮)이라고도 했습니다." },
+            { hanja: "景福宮", answer: "경복궁", meaning: "'하늘이 내린 큰 복'이라는 뜻이며, 조선의 정궁(正宮)이자 법궁(法宮)입니다. 태조 3년(1395년)에 세워져 새 왕조가 큰 복을 누릴 것을 기원했습니다." },
+            { hanja: "昌德宮", answer: "창덕궁", meaning: "'덕을 빛내어 창성하게 하다'는 뜻입니다. 경복궁 중건 전까지 실질적인 법궁 역할을 했으며, 주변 지형과 조화를 이루도록 건축되어 유네스코 세계유산입니다." },
+            { hanja: "昌慶宮", answer: "창경궁", meaning: "'경사스러움이 창성하다'는 뜻입니다. 성종이 세 명의 대비를 위해 확장한 궁이며, 창덕궁과 함께 동궐(東闕)이라고도 불렸습니다. 왕실 가족들의 생활 공간으로 사용되었습니다." },
+            { hanja: "德壽宮", answer: "덕수궁", meaning: "'덕으로서 장수하다'는 뜻입니다. 임진왜란 후 임시 궁궐로 사용되었고, 고종이 대한제국을 선포한 후 황제궁으로 사용했습니다." },
+            { hanja: "慶熙宮", answer: "경희궁", meaning: "'경사스러움이 넓게 빛나다'는 뜻입니다. 광해군 때 창덕궁의 이궁(離宮)으로 창건되었으며, 인조 즉위 직후 정사를 본 궁이기도 합니다." },
+            { hanja: "都城", answer: "도성", meaning: "'성으로 이루어져 있는 도읍지'를 의미합니다. 왕궁을 중심으로 핵심 시설이 밀집되어 국가 사회를 운영하는 거점이었습니다." },
+            { hanja: "四大門", answer: "사대문", meaning: "조선 도성의 사방에 세운 4개의 큰 성문입니다. (흥인지문, 돈의문, 숭례문, 숙정문)." },
+            { hanja: "興仁之門", answer: "흥인지문", meaning: "'어짊을 일으키다'는 뜻입니다. 도성 8개 성문 중 유일하게 성문 보호를 위한 반원 모양의 성곽인 옹성(甕城)을 갖추고 있습니다." },
+            { hanja: "崇禮門", answer: "숭례문", meaning: "'예를 숭상하다'는 뜻입니다. 한양 도성의 정문(남대문)이며, 서울에 현존하는 목조 건물 중 가장 오래된 것입니다." },
+            { hanja: "肅靖門", answer: "숙정문", meaning: "'엄숙하고 편안하다'는 뜻입니다. 실질적인 성의 역할은 하지 않았으며, 풍수지리상 음(陰)한 기운 때문에 기우제 때만 열고 비가 오면 닫았다고 합니다." },
+            { hanja: "宗廟", answer: "종묘", meaning: "'조종(祖宗, 군주의 조상)의 사당'입니다. 역대 왕과 왕비의 위패를 모시던 왕실 사당이며, 유네스코 세계유산에 등재되었습니다." },
+            { hanja: "社稷壇", answer: "사직단", meaning: "토신(社)과 곡신(稷)에게 제사지내던 제단입니다. 농경사회에서 땅과 곡식이 국가 경제의 근본이었기에 조선왕조의 근간이 되었습니다." },
+            { hanja: "王陵", answer: "왕릉", meaning: "왕과 왕비의 무덤입니다. 효와 예를 갖추어 조성되었으며, 현재 40기의 왕릉이 유네스코 세계유산에 등재되어 있습니다." },
+            { hanja: "園", answer: "원", meaning: "왕세자나 세자빈, 왕실 종친의 무덤을 의미합니다. (예: 현륭원)." },
+            { hanja: "墓", answer: "묘", meaning: "사대부나 일반 사람들의 무덤을 의미합니다." }
+        ],
+        14: [
+            { hanja: "城郭", answer: "성곽", meaning: "흙이나 돌로 쌓은 성(城)과 그 주위를 담으로 둘러싼 구역(郭)을 아울러 이르는 말입니다." },
+            { hanja: "垓子/垓字", answer: "해자", meaning: "성의 경계를 따라 주위에 둘러 판 못(도랑)입니다. 외적의 침략으로부터 성곽을 방어하고 식수를 확보하는 등의 용도로 사용되었습니다." },
+            { hanja: "木柵", answer: "목책", meaning: "말뚝 따위를 잇따라 박아 만든 나무 울타리입니다. 해자를 건너온 외적을 막기 위해 설치했습니다." },
+            { hanja: "土城", answer: "토성", meaning: "흙으로 쌓아 올린 성루입니다. 나무로 뼈대를 만들어 쌓은 뒤 흙으로 덮어 무너지지 않게 조성했습니다." },
+            { hanja: "山城", answer: "산성", meaning: "방어를 목적으로 산 위에 돌로 쌓은 성입니다. 유사시 산성으로 들어가 항쟁(입보)하는 방어 시설이었습니다." },
+            { hanja: "邑城", answer: "읍성", meaning: "성벽을 두르고 특정 지방을 다스리는 지방의 성입니다. 고려 말 조선 초 왜구의 침입에 대비하여 나지막한 구릉을 낀 평지에 위치했습니다." },
+            { hanja: "書院", answer: "서원", meaning: "글을 배우는 곳입니다. 조선 중기 이후 선현을 기리고 인재를 키우기 위해 세운 사립학교이자 유학 학습 공간입니다." },
+            { hanja: "八不出", answer: "팔불출", meaning: "서원에서 8번 낙제(不)를 받으면 퇴학을 당하는 규칙에서 유래하여 '몹시 어리석은 사람'을 뜻하는 말이 되었습니다." },
+            { hanja: "不", answer: "불", meaning: "서원의 학업 성취도 평가에서 낙제를 의미하는 표시입니다." },
+            { hanja: "純", answer: "순", meaning: "서원의 학업 성취도 평가에서 통과를 의미하는 표시입니다." },
+            { hanja: "寺刹", answer: "사찰", meaning: "승려가 불상을 모시고 불도를 닦는 집입니다. 사원(寺院) 또는 가람, 정사, 절 등으로 불립니다." },
+            { hanja: "大雄殿", answer: "대웅전", meaning: "석가모니불을 모신 전각으로, '크고 웅장한 전각'이라는 뜻입니다." },
+            { hanja: "極樂殿", answer: "극락전", meaning: "아미타불을 모신 전각입니다. '극락'에 있는 아미타불을 상징하며, 미타전, 무량수전 등의 별칭이 있습니다." },
+            { hanja: "彌勒殿", answer: "미륵전", meaning: "미래에 내려와 중생을 제도하기로 되어 있는 미륵불을 모신 전각입니다." },
+            { hanja: "寂滅寶宮", answer: "적멸보궁", meaning: "번뇌를 끊고 생사의 괴로움을 끊은(寂滅, 열반) 부처의 사리를 모신 전각입니다. 전각 밖 뒤쪽에 사리탑이나 계단이 설치됩니다." },
+            { hanja: "佛國寺", answer: "불국사", meaning: "'부처의 나라'라는 뜻입니다. 신라 김대성이 현생 부모의 명복을 빌기 위해 건축했으며, 석가모니의 아버지 정반왕이 다스리던 카필라국을 상징합니다." },
+            { hanja: "石窟庵", answer: "석굴암", meaning: "'돌로 만든 굴 사원'이라는 뜻입니다. 김대성이 전생 부모인 마야부인의 명복을 빌기 위해 천상의 '천궁'을 건축적으로 구현했습니다." },
+            { hanja: "無影塔", answer: "무영탑", meaning: "석가탑의 별칭으로, 백제 석공 아사달의 아내 아사녀가 탑 그림자가 비치기를 기다리다 연못에 빠졌다는 설화에서 유래했습니다." }
+        ],
+        15: [
+            { hanja: "感情", answer: "감정", meaning: "'느껴서 일어나는 마음의 작용'을 뜻합니다." },
+            { hanja: "理性", answer: "이성", meaning: "'사유함으로써 마음을 다스리는 본성'을 뜻합니다. 이성과 감정의 조화로운 상태가 정신 건강의 척도가 됩니다." },
+            { hanja: "喜怒哀樂", answer: "희로애락", meaning: "기쁘고, 노엽고, 슬프고, 즐거운 네 가지 감정입니다. 세상(인간)을 이루는 근본을 감정이 드러나는 방식으로 설명하며, 중용(中庸)의 첫 구절에 인용되었습니다." },
+            { hanja: "中庸", answer: "중용", meaning: "1. 지나치거나 모자람이 없고 한쪽으로 치우치지 않는 상태. 2. 일상 속에 있는 불변의 지극한 진리. 중(中)은 희로애락이 발현되지 않는 고요한 마음 상태를 의미하며, 화(和)는 희로애락이 발현되었을 때 모두 절도에 맞는 상태를 의미합니다." },
+            { hanja: "未練", answer: "미련", meaning: "'아직 익숙하지 않은 마음'이라는 뜻에서 유래했습니다. 어딘가에 계속 마음을 쓰면서 연연해 하는 상태를 의미합니다." },
+            { hanja: "斷腸", answer: "단장", meaning: "'창자가 끊어지는 듯한 슬픔'을 뜻합니다. 새끼를 잃은 어미 원숭이의 창자가 모두 끊어졌다는 고사에서 유래했습니다." },
+            { hanja: "拍掌大笑", answer: "박장대소", meaning: "손바닥을 치며 크게 웃는다는 뜻입니다." },
+            { hanja: "破顔大笑", answer: "파안대소", meaning: "얼굴 형태가 깨지도록 크게 웃는다는 뜻입니다." },
+            { hanja: "抱腹絶倒", answer: "포복절도", meaning: "배를 안고 기절하여 쓰러질 정도로 웃는다는 뜻입니다." },
+            { hanja: "腰折腹痛", answer: "요절복통", meaning: "허리가 끊기고 배가 아플 정도로 웃는다는 뜻입니다." },
+            { hanja: "念頭", answer: "염두", meaning: "'생각의 첫머리' 또는 '마음 속'을 의미합니다. ('염두에 두다' = 마음속에 담아두다)." },
+            { hanja: "反芻", answer: "반추", meaning: "소나 염소처럼 한 번 삼킨 것을 게워 다시 씹는 행위(되새김)를 뜻합니다. 여기에서 유래하여 '지나간 일을 곱씹어 생각하는 행위'를 의미합니다." },
+            { hanja: "寒心", answer: "한심", meaning: "마음이 차가워짐을 뜻하며, 너무 지나치거나 모자라서 딱하거나 기막힐 때 마음이 차게 식는 상태입니다." },
+            { hanja: "熱心", answer: "열심", meaning: "마음이 뜨거움을 뜻하며, 어떤 일에 정진하여 집중하는 상태입니다." }
+        ]
+    };
+
+    // ==========================================================
+    // 2. 전역 상태 관리
+    // ==========================================================
+    // quizState[weekNum] = { questions: [...], currentIndex: 0, answeredState: {...} }
+    const quizState = {};
+    let currentWeek = 10; // 현재 활성화된 주차
+
+    // ==========================================================
+    // 3. 유틸리티 함수
+    // ==========================================================
+    // 배열을 섞는 함수 (피셔-예이츠 알고리즘)
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    // 결과 HTML 생성 함수
+    function getResultHtml(q, isCorrect) {
+        if (isCorrect) {
+            return `
+                ✅ **정답입니다!**
+                <div class="story">
+                    <strong>한자어 이야기:</strong> ${q.meaning}
+                </div>
+            `;
+        } else {
+            return `
+                ❌ **아쉽지만 오답입니다.**
+                <br>
+                **정답:** ${q.answer} (${q.hanja})
+                <div class="story">
+                    <strong>한자어 이야기:</strong> ${q.meaning}
+                </div>
+            `;
+        }
+    }
+
+    // ==========================================================
+    // 4. 메인 퀴즈 로직
+    // ==========================================================
+
+    // 퀴즈 시작 함수
+    function startQuiz(weekNum) {
+        // 상태 초기화
+        quizState[weekNum] = {
+            // 문제 순서를 새로 섞고 상태 초기화
+            questions: shuffleArray([...allHanjaWords[weekNum]]), 
+            currentIndex: 0,
+            answeredState: {}
+        };
+        
+        // 버튼 표시 및 숨김
+        document.getElementById(`retryBtn-${weekNum}`).style.display = 'none';
+        document.getElementById(`prevBtn-${weekNum}`).style.display = 'block';
+        document.getElementById(`nextBtn-${weekNum}`).style.display = 'block';
+
+        loadQuestion(weekNum);
+    }
+
+    // 문제 로드 함수
+    function loadQuestion(weekNum) {
+        const state = quizState[weekNum];
+        const totalQuestions = state.questions.length;
+
+        if (state.currentIndex < 0) state.currentIndex = 0;
+        if (state.currentIndex >= totalQuestions) {
+            showResults(weekNum);
+            return;
+        }
+
+        const q = state.questions[state.currentIndex];
+        const currentAnswerState = state.answeredState[state.currentIndex] || { answered: false, correct: false, input: '' };
+        
+        const checkButton = currentAnswerState.answered ? '' : `<button onclick="checkAnswer(${weekNum})">정답 확인</button>`;
+        const inputDisabled = currentAnswerState.answered ? 'disabled' : '';
+
+        const questionBox = document.getElementById(`questionBox-${weekNum}`);
+
+        questionBox.innerHTML = `
+            <h2>${q.hanja}</h2>
+            <div class="input-group">
+                <input type="text" id="answerInput-${weekNum}" placeholder="한글 음을 입력하세요" value="${currentAnswerState.input}" maxlength="10" onkeypress="checkEnter(event, ${weekNum})" ${inputDisabled}>
+                ${checkButton}
+            </div>
+            <div class="result ${currentAnswerState.answered ? (currentAnswerState.correct ? 'correct' : 'incorrect') : ''}" id="resultArea-${weekNum}" style="display: ${currentAnswerState.answered ? 'block' : 'none'};">
+                ${currentAnswerState.answered ? getResultHtml(q, currentAnswerState.correct) : ''}
+            </div>
+        `;
+        
+        if (!currentAnswerState.answered) {
+            document.getElementById(`answerInput-${weekNum}`)?.focus();
+        }
+        
+        updateControls(weekNum);
+    }
+
+    // 정답 확인 함수
+    function checkAnswer(weekNum) {
+        const state = quizState[weekNum];
+        const q = state.questions[state.currentIndex];
+        const input = document.getElementById(`answerInput-${weekNum}`);
+        const resultArea = document.getElementById(`resultArea-${weekNum}`);
+        const userAnswer = input.value.trim().toLowerCase().replace(/\s/g, "");
+        const correctAnswer = q.answer.toLowerCase().replace(/\s/g, "");
+        const isCorrect = userAnswer === correctAnswer;
+
+        // 상태 업데이트
+        state.answeredState[state.currentIndex] = { 
+            answered: true, 
+            correct: isCorrect, 
+            input: input.value
+        };
+
+        // 화면 업데이트
+        input.disabled = true;
+        document.getElementById(`questionBox-${weekNum}`).querySelector('.input-group button').style.display = 'none';
+        
+        resultArea.style.display = 'block';
+        resultArea.className = 'result ' + (isCorrect ? 'correct' : 'incorrect');
+        resultArea.innerHTML = getResultHtml(q, isCorrect);
+        
+        updateControls(weekNum);
+    }
+
+    // Enter 키로 정답 확인
+    function checkEnter(event, weekNum) {
+        if (event.key === 'Enter' && !document.getElementById(`answerInput-${weekNum}`)?.disabled) {
+            checkAnswer(weekNum);
+        }
+    }
+    
+    // 현재 문제 입력값 저장 유틸리티 함수
+    function saveCurrentInput(weekNum) {
+        const inputElement = document.getElementById(`answerInput-${weekNum}`);
+        const state = quizState[weekNum];
+        if (inputElement) {
+             state.answeredState[state.currentIndex] = { 
+                ...state.answeredState[state.currentIndex],
+                input: inputElement.value 
+            };
+        }
+    }
+
+    // 다음 문제로 이동
+    function nextQuestion(weekNum) {
+        const state = quizState[weekNum];
+        saveCurrentInput(weekNum);
+        
+        if (state.currentIndex < state.questions.length - 1) {
+            state.currentIndex++;
+            loadQuestion(weekNum);
+        } else if (state.currentIndex === state.questions.length - 1) {
+            if (state.answeredState[state.currentIndex]?.answered) {
+                 showResults(weekNum);
+            }
+        }
+    }
+
+    // 이전 문제로 이동
+    function prevQuestion(weekNum) {
+        const state = quizState[weekNum];
+        saveCurrentInput(weekNum);
+        
+        if (state.currentIndex > 0) {
+            state.currentIndex--;
+            loadQuestion(weekNum);
+        }
+    }
+    
+    // 버튼 상태 및 진행률 업데이트
+    function updateControls(weekNum) {
+        const state = quizState[weekNum];
+        const totalQuestions = state.questions.length;
+        const currentNum = state.currentIndex + 1;
+        
+        const progressDisplay = document.getElementById(`progress-${weekNum}`);
+        const prevBtn = document.getElementById(`prevBtn-${weekNum}`);
+        const nextBtn = document.getElementById(`nextBtn-${weekNum}`);
+
+        // 진행률 업데이트
+        progressDisplay.textContent = `진행률: ${currentNum} / ${totalQuestions}`;
+        
+        // 이전 버튼 상태
+        prevBtn.disabled = (state.currentIndex === 0);
+
+        // 다음 버튼 텍스트와 상태
+        const isAnswered = state.answeredState[state.currentIndex]?.answered;
+        if (state.currentIndex === totalQuestions - 1) {
+            nextBtn.textContent = isAnswered ? '결과 보기' : '정답 확인 필요';
+            nextBtn.disabled = !isAnswered;
+        } else {
+            nextBtn.textContent = '다음 문제';
+            nextBtn.disabled = false;
+        }
+    }
+
+    // 최종 결과 표시
+    function showResults(weekNum) {
+        const state = quizState[weekNum];
+        const totalQuestions = state.questions.length;
+        
+        // 맞은 개수 최종 계산 (답변한 문제만 필터링)
+        const finalScore = Object.values(state.answeredState).filter(q => q.correct).length;
+
+        const questionBox = document.getElementById(`questionBox-${weekNum}`);
+        const progressDisplay = document.getElementById(`progress-${weekNum}`);
+        const prevBtn = document.getElementById(`prevBtn-${weekNum}`);
+        const nextBtn = document.getElementById(`nextBtn-${weekNum}`);
+        const retryBtn = document.getElementById(`retryBtn-${weekNum}`);
+
+        questionBox.innerHTML = `
+            <h2 style="color: #28a745;">🎉 ${weekNum}주차 퀴즈 완료! 🎉</h2>
+            <p style="font-size: 1.5em; text-align: center;">총 ${totalQuestions} 문제 중 **${finalScore}** 개를 맞히셨습니다.</p>
+            <p style="text-align: center; color: #4a90e2; font-weight: bold;">다시 한번 도전하여 만점에 도전해 보세요!</p>
+        `;
+        progressDisplay.textContent = `퀴즈 완료! (최종 점수: ${finalScore}점)`;
+        
+        prevBtn.style.display = 'none';
+        nextBtn.style.display = 'none';
+        retryBtn.style.display = 'block'; 
+    }
+    
+    // 주차 변경 함수 (탭 전환)
+    function changeWeek(weekNum) {
+        // 기존 탭 비활성화
+        document.getElementById(`tab-${currentWeek}`).classList.remove('current-week');
+        document.getElementById(`quiz-${currentWeek}`).classList.remove('active');
+
+        // 새 탭 활성화
+        document.getElementById(`tab-${weekNum}`).classList.add('current-week');
+        document.getElementById(`quiz-${weekNum}`).classList.add('active');
+        currentWeek = weekNum;
+
+        // 해당 주차 퀴즈 로드
+        if (!quizState[weekNum] || Object.keys(quizState[weekNum].answeredState).length === 0) {
+            startQuiz(weekNum);
+        } else {
+            loadQuestion(weekNum); // 이미 풀던 퀴즈가 있다면 이어서 로드
+        }
+    }
+
+    // 페이지 로드 시 초기 설정
+    window.onload = function() {
+        // 10주차 퀴즈만 초기에 활성화
+        for (let i = 10; i <= 15; i++) {
+            if (i !== 10) {
+                document.getElementById(`tab-${i}`).classList.remove('current-week');
+                document.getElementById(`quiz-${i}`).classList.remove('active');
+            }
+        }
+        startQuiz(10);
+    };
+</script>
 
 </body>
 </html>
