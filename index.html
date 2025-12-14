@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>통합 생활 한자어 퀴즈 (10주차 ~ 15주차)</title>
+    <title>통합 생활 한자어 퀴즈 (9주차 ~ 15주차)</title>
     <style>
         body {
             font-family: 'Malgun Gothic', sans-serif;
@@ -186,9 +186,10 @@
 <div class="container">
     
     <div class="week-navigation">
-        <button id="tab-99" onclick="changeWeek(99)" class="all-quiz-btn">전체 퀴즈 (10~15주)</button>
+        <button id="tab-99" onclick="changeWeek(99)" class="all-quiz-btn">전체 퀴즈 (9~15주)</button>
         
-        <button id="tab-10" onclick="changeWeek(10)" class="current-week">10주차</button>
+        <button id="tab-9" onclick="changeWeek(9)">9주차</button>
+        <button id="tab-10" onclick="changeWeek(10)">10주차</button>
         <button id="tab-11" onclick="changeWeek(11)">11주차</button>
         <button id="tab-12" onclick="changeWeek(12)">12주차</button>
         <button id="tab-13" onclick="changeWeek(13)">13주차</button>
@@ -200,7 +201,7 @@
     </div>
 
     <div id="quiz-99" class="quiz-section">
-        <h1>전체 통합 퀴즈 (10주차 ~ 15주차) 🚀</h1>
+        <h1>전체 통합 퀴즈 (9주차 ~ 15주차) 🚀</h1>
         <div class="progress" id="progress-99"></div>
         <div class="question-box" id="questionBox-99"></div>
         <div class="controls">
@@ -210,7 +211,18 @@
         </div>
     </div>
     
-    <div id="quiz-10" class="quiz-section active">
+    <div id="quiz-9" class="quiz-section active">
+        <h1>9주차 사주 한자어 음 맞추기 퀴즈 📝</h1>
+        <div class="progress" id="progress-9"></div>
+        <div class="question-box" id="questionBox-9"></div>
+        <div class="controls">
+            <button id="prevBtn-9" onclick="prevQuestion(9)">이전</button>
+            <button id="nextBtn-9" onclick="nextQuestion(9)">다음 문제</button>
+            <button id="retryBtn-9" onclick="startQuiz(9)" style="display:none;">다시 시작</button>
+        </div>
+    </div>
+
+    <div id="quiz-10" class="quiz-section">
         <h1>10주차 생활 한자어 음 맞추기 퀴즈 📝</h1>
         <div class="progress" id="progress-10"></div>
         <div class="question-box" id="questionBox-10"></div>
@@ -283,6 +295,25 @@
     // 1. 퀴즈 데이터 정의 (각 주차별 데이터)
     // ==========================================================
     const allHanjaWords = {
+        9: [
+            { hanja: "陰陽五行", answer: "음양오행", meaning: "음양설과 오행설이 결합된 동양의 우주관입니다. 우주의 변화 속에서 작용하여 복과 재앙, 길과 흉을 만든다고 보았습니다." },
+            { hanja: "陰陽", answer: "음양", meaning: "음기(陰氣)와 양기(陽氣)라는 상호보완적인 두 힘이 작용하여 온 우주의 발생, 변화, 소멸을 일으킨다는 사상입니다." },
+            { hanja: "陰氣", answer: "음기", meaning: "수동적, 추위, 어둠, 습함, 부드러운 것, 여성 등과 관련됩니다." },
+            { hanja: "陽氣", answer: "양기", meaning: "능동적, 더위, 밝음, 건조함, 굳은 것, 남성 등과 관련됩니다." },
+            { hanja: "五行", answer: "오행", meaning: "세상을 움직이는 다섯 가지의 힘이자 순환 운동입니다. 목(木), 화(火), 토(土), 금(金), 수(水)로 이루어져 있으며, 우주의 사물을 이 다섯 가지로 나누어 모든 변화에 적용했습니다." },
+            { hanja: "周易", answer: "주역", meaning: "주나라의 역법(점치는 방법)을 뜻합니다. 64괘를 통해 앞으로의 일을 예측하고, 행동을 도리에 맞게 변화하게 만드는 교화의 방법이었습니다." },
+            { hanja: "書經", answer: "서경", meaning: "옛날의 역사적 문헌으로, 훌륭한 군주와 현명한 신하의 이야기를 기록했습니다. '홍범편'에 오행(五行)에 대한 기록이 있습니다." },
+            { hanja: "五行相生說", answer: "오행상생설", meaning: "오행이 서로 돕고 영향을 주어 순환하는 관계를 설명합니다. (예: 水生木, 木生火, 火生土, 土生金, 金生水)." },
+            { hanja: "五行相克說", answer: "오행상극설", meaning: "오행이 서로 이기고 억제하는 관계를 설명합니다. (예: 金克木, 木克土, 土克水, 水克火, 火克金)." },
+            { hanja: "風水地理", answer: "풍수지리", meaning: "땅의 기를 살펴 땅의 성격을 읽어내는 방법입니다. 음양오행을 기초로 하며, 지형과 방위를 인간의 길흉화복과 연결하는 이론입니다." },
+            { hanja: "吉凶禍福", answer: "길흉화복", meaning: "상서롭고 흉악하고 재앙이 닥치고 복을 받는다는 뜻으로, 인간에게 닥쳐오는 여러 가지 상황을 점칠 때 사용됩니다." },
+            { hanja: "裨補寺塔說", answer: "비보사탑설", meaning: "도선이 창안한 이론으로, 산천 지세의 지리적 조건의 결함을 사찰이나 탑을 세워 보완하려는 취지의 지리론입니다. 이를 통해 지역의 균형적 발전을 매개로 국가의 안녕을 추구했습니다." },
+            { hanja: "干支", answer: "간지", meaning: "천간(天干)과 지지(地支)를 아울러 이르는 말입니다. 음양오행을 근본으로 하여 일상의 달력을 만드는 원리입니다." },
+            { hanja: "天干", answer: "천간", meaning: "십간(十干)이라고도 하며, 甲, 乙, 丙, 丁, 戊, 己, 庚, 辛, 壬, 癸의 10개입니다." },
+            { hanja: "地支", answer: "지지", meaning: "십이지(十二支)라고도 하며, 子, 丑, 寅, 卯, 辰, 巳, 午, 未, 申, 酉, 戌, 亥의 12개입니다." },
+            { hanja: "六十甲子", answer: "육십갑자", meaning: "10개의 천간과 12개의 지지를 결합한 총 60가지의 주기를 뜻합니다. 갑자, 을축, 병인, 정묘 등 연·월·일에 사용되며, 60년 주기가 끝까지 갔다가 다시 처음 '갑자'로 돌아옵니다." },
+            { hanja: "回甲/還甲", answer: "회갑/환갑", meaning: "갑(甲)으로 돌아왔다는 뜻으로, 61세가 되는 해를 의미합니다." }
+        ],
         10: [
             { hanja: "黑字", answer: "흑자", meaning: "수입이 지출보다 많을 때(잉여 이익)를 의미하며, 회계 장부 기입 시 흑색 잉크로 표시하는 데서 유래했습니다." },
             { hanja: "赤字", answer: "적자", meaning: "지출이 수입보다 많을 때(결손액)를 의미하며, 회계 장부 기입 시 적색 잉크로 표시하는 데서 유래했습니다." },
@@ -439,19 +470,19 @@
         ]
     };
 
-    // 10주차부터 15주차까지의 모든 한자어를 합쳐 '99'번 인덱스에 저장
+    // 10주차부터 15주차까지의 모든 한자어를 합쳐 '99'번 인덱스에 저장 (9주차도 포함)
     allHanjaWords[99] = [];
-    for (let i = 10; i <= 15; i++) {
+    for (let i = 9; i <= 15; i++) {
         allHanjaWords[99].push(...allHanjaWords[i]);
     }
-    // 총 문제 수: 34 + 25 + 29 + 22 + 18 + 14 = 142개
+    // 총 문제 수: 21 + 34 + 25 + 29 + 22 + 18 + 14 = 163개 (21 + 142)
 
     // ==========================================================
     // 2. 전역 상태 관리
     // ==========================================================
     // quizState[weekNum] = { questions: [...], currentIndex: 0, answeredState: {...} }
     const quizState = {};
-    let currentWeek = 10; // 현재 활성화된 주차 (초기값 10)
+    let currentWeek = 9; // 현재 활성화된 주차 (초기값 9)
 
     // ==========================================================
     // 3. 유틸리티 함수
@@ -467,22 +498,19 @@
 
     // 결과 HTML 생성 함수
     function getResultHtml(q, isCorrect) {
-        // q.meaning에 주차 정보 추가
-        let weekInfo = '';
-        if (currentWeek === 99) {
-            // 전체 퀴즈 모드에서는 주차 정보를 표시하지 않습니다. (구현의 편의를 위해 생략)
-        }
-        
+        // q.meaning에 주차 정보 추가 (전체 퀴즈 모드에서는 주차 정보를 생략)
+        let titleText = currentWeek === 99 ? '문제' : `${currentWeek}주차 문제`;
+
         if (isCorrect) {
             return `
-                ✅ **정답입니다!** ${weekInfo}
+                ✅ **정답입니다!**
                 <div class="story">
                     <strong>한자어 이야기:</strong> ${q.meaning}
                 </div>
             `;
         } else {
             return `
-                ❌ **아쉽지만 오답입니다.** ${weekInfo}
+                ❌ **아쉽지만 오답입니다.**
                 <br>
                 **정답:** ${q.answer} (${q.hanja})
                 <div class="story">
@@ -664,7 +692,7 @@
         const nextBtn = document.getElementById(`nextBtn-${weekNum}`);
         const retryBtn = document.getElementById(`retryBtn-${weekNum}`);
 
-        const titleText = weekNum === 99 ? `전체 퀴즈 (총 142문제)` : `${weekNum}주차 퀴즈`;
+        const titleText = weekNum === 99 ? `전체 퀴즈 (총 ${totalQuestions}문제)` : `${weekNum}주차 퀴즈`;
         
         questionBox.innerHTML = `
             <h2 style="color: #28a745;">🎉 ${titleText} 완료! 🎉</h2>
@@ -680,22 +708,25 @@
     
     // 주차 변경 함수 (탭 전환)
     function changeWeek(weekNum) {
-        // 기존 탭 비활성화 (전체 퀴즈 버튼과 주차 버튼 모두 처리)
-        document.getElementById(`tab-${currentWeek}`)?.classList.remove('current-week', 'all-quiz-btn');
-        document.getElementById(`tab-${currentWeek}`)?.classList.add(currentWeek === 99 ? 'all-quiz-btn' : 'quiz-btn');
-
-        document.getElementById(`quiz-${currentWeek}`).classList.remove('active');
-
+        // 모든 탭과 섹션을 비활성화 상태로 초기화
+        for (let i = 9; i <= 15; i++) {
+            document.getElementById(`tab-${i}`).classList.remove('current-week');
+            document.getElementById(`quiz-${i}`).classList.remove('active');
+        }
+        document.getElementById(`tab-99`).classList.remove('current-week');
+        document.getElementById(`quiz-99`).classList.remove('active');
+        
         // 새 탭 활성화
         document.getElementById(`tab-${weekNum}`).classList.add('current-week');
         document.getElementById(`quiz-${weekNum}`).classList.add('active');
         currentWeek = weekNum;
         
-        // 전체 퀴즈 버튼 색상 조정
+        // 전체 퀴즈 버튼 스타일 조정
         if (weekNum === 99) {
             document.getElementById(`tab-99`).classList.remove('quiz-btn');
             document.getElementById(`tab-99`).classList.add('all-quiz-btn');
         } else {
+            // 다른 주차 탭 클릭 시, 전체 퀴즈 탭을 기본 버튼 스타일로 되돌림
              document.getElementById(`tab-99`).classList.remove('all-quiz-btn');
              document.getElementById(`tab-99`).classList.add('quiz-btn');
         }
@@ -710,22 +741,31 @@
     
     // 페이지 로드 시 초기 설정
     window.onload = function() {
-        // 모든 섹션을 초기화 (99 포함)
-        for (let i = 10; i <= 15; i++) {
+        // 모든 퀴즈 데이터에 99번(전체) 데이터가 정확히 포함되었는지 확인
+        if (allHanjaWords[99].length === 163) {
+            console.log("Total 163 quiz items loaded successfully.");
+        } else {
+             console.error("Quiz data loading error. Total items:", allHanjaWords[99].length);
+        }
+        
+        // 초기화 후 9주차 활성화 (currentWeek = 9)
+        currentWeek = 9;
+        
+        // 모든 섹션을 초기 비활성화 상태로 시작
+        for (let i = 9; i <= 15; i++) {
             document.getElementById(`quiz-${i}`).classList.remove('active');
             document.getElementById(`tab-${i}`).classList.remove('current-week');
         }
         document.getElementById(`quiz-99`).classList.remove('active');
         document.getElementById(`tab-99`).classList.remove('current-week');
-        document.getElementById(`tab-99`).classList.add('all-quiz-btn'); // 전체 퀴즈 버튼 스타일 초기 설정
+        document.getElementById(`tab-99`).classList.add('all-quiz-btn');
 
-        // 기본적으로 10주차 활성화 (제공된 파일의 초기 상태 유지)
-        currentWeek = 10;
+
+        // 9주차를 기본 활성화
         document.getElementById(`quiz-${currentWeek}`).classList.add('active');
         document.getElementById(`tab-${currentWeek}`).classList.add('current-week');
-        document.getElementById(`tab-${currentWeek}`).classList.remove('quiz-btn'); // 기본 스타일에서 current-week로 전환
-
-        startQuiz(10);
+        
+        startQuiz(currentWeek);
     };
 </script>
 
