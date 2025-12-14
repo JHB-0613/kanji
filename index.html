@@ -5,189 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>통합 생활 한자어 퀴즈 (9주차 ~ 15주차)</title>
     <style>
-        body {
-            font-family: 'Malgun Gothic', sans-serif;
-            background-color: #f4f4f9;
-            color: #333;
-            margin: 0;
-            padding: 20px;
-        }
-        .container {
-            max-width: 950px;
-            margin: 0 auto;
-            background: #fff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-        /* --- 내비게이션 및 탭 스타일 --- */
-        .week-navigation {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 5px;
-            margin-bottom: 20px;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            background-color: #ecf0f1;
-        }
-        .week-navigation button, .week-navigation a.btn {
-            padding: 10px 15px;
-            font-size: 0.9em;
-            background-color: #5bc0de;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            text-decoration: none;
-            display: inline-block;
-        }
-        .week-navigation button:hover, .week-navigation a.btn:hover {
-            background-color: #31b0d5;
-        }
-        .week-navigation .current-week {
-            background-color: #007bff;
-            font-weight: bold;
-        }
-        .week-navigation .analysis-btn {
-            background-color: #2ecc71;
-            margin-left: 15px;
-        }
-        .week-navigation .all-quiz-btn {
-            background-color: #e74c3c;
-            font-weight: bold;
-            margin-right: 15px;
-        }
-        .week-navigation .all-quiz-btn:hover {
-            background-color: #c0392b;
-        }
-        
-        /* --- 퀴즈 섹션 및 문제 스타일 --- */
-        .quiz-section {
-            display: none; /* 초기에는 모든 퀴즈 섹션 숨김 */
-        }
-        .quiz-section.active {
-            display: block;
-        }
-        h1 {
-            color: #4a90e2;
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 2em;
-        }
-        .question-box {
-            background-color: #e9f7ff;
-            border: 1px solid #cceeff;
-            padding: 25px;
-            margin-bottom: 20px;
-            border-radius: 8px;
-            min-height: 250px;
-        }
-        .question-box h2 {
-            font-size: 2.2em;
-            text-align: center;
-            color: #007bff;
-            margin-top: 0;
-            margin-bottom: 15px;
-            font-weight: bold;
-        }
-        .input-group {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-        .input-group input[type="text"] {
-            padding: 10px;
-            font-size: 1.2em;
-            border: 2px solid #ccc;
-            border-radius: 5px;
-            width: 45%;
-            text-align: center;
-        }
-        .input-group button {
-            padding: 10px 20px;
-            font-size: 1.1em;
-            background-color: #5cb85c;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .input-group button:hover:not(:disabled) {
-            background-color: #4cae4c;
-        }
-        .result {
-            margin-top: 15px;
-            padding: 15px;
-            border-radius: 5px;
-            background-color: #fff;
-            border: 1px solid #ddd;
-            display: none;
-        }
-        .correct {
-            border-color: #28a745;
-            background-color: #d4edda;
-            color: #155724;
-        }
-        .incorrect {
-            border-color: #dc3545;
-            background-color: #f8d7da;
-            color: #721c24;
-        }
-        .story {
-            margin-top: 10px;
-            padding-top: 10px;
-            border-top: 1px dashed #aaa;
-            font-size: 0.95em;
-            text-align: left;
-            line-height: 1.5;
-        }
-        .story strong {
-            color: #007bff;
-        }
-        .controls {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 30px;
-        }
-        .controls button {
-            padding: 10px 25px;
-            font-size: 1em;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .controls button:hover:not(:disabled) {
-            background-color: #0056b3;
-        }
-        .controls button:disabled {
-            background-color: #ccc;
-            cursor: not-allowed;
-        }
-        .progress {
-            text-align: center;
-            margin-bottom: 20px;
-            font-size: 1.1em;
-            font-weight: bold;
-            color: #4a90e2;
-        }
+        body { font-family: 'Malgun Gothic', sans-serif; background-color: #f4f4f9; color: #333; margin: 0; padding: 20px; }
+        .container { max-width: 950px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); }
+        .week-navigation { display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; margin-bottom: 20px; padding: 10px; border: 1px solid #ddd; border-radius: 8px; background-color: #ecf0f1; }
+        .week-navigation button, .week-navigation a.btn { padding: 10px 15px; font-size: 0.9em; background-color: #5bc0de; color: white; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s; text-decoration: none; display: inline-block; }
+        .week-navigation button:hover, .week-navigation a.btn:hover { background-color: #31b0d5; }
+        .week-navigation .current-week { background-color: #007bff; font-weight: bold; }
+        .week-navigation .analysis-btn { background-color: #2ecc71; margin-left: 15px; }
+        .week-navigation .all-quiz-btn { background-color: #e74c3c; font-weight: bold; margin-right: 15px; }
+        .week-navigation .all-quiz-btn:hover { background-color: #c0392b; }
+        .quiz-section { display: none; }
+        .quiz-section.active { display: block; }
+        h1 { color: #4a90e2; text-align: center; margin-bottom: 30px; font-size: 2em; }
+        .question-box { background-color: #e9f7ff; border: 1px solid #cceeff; padding: 25px; margin-bottom: 20px; border-radius: 8px; min-height: 250px; }
+        .question-box h2 { font-size: 2.2em; text-align: center; color: #007bff; margin-top: 0; margin-bottom: 15px; font-weight: bold; }
+        .input-group { display: flex; justify-content: center; gap: 10px; margin-bottom: 15px; }
+        .input-group input[type="text"] { padding: 10px; font-size: 1.2em; border: 2px solid #ccc; border-radius: 5px; width: 45%; text-align: center; }
+        .input-group button { padding: 10px 20px; font-size: 1.1em; background-color: #5cb85c; color: white; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s; }
+        .input-group button:hover:not(:disabled) { background-color: #4cae4c; }
+        .result { margin-top: 15px; padding: 15px; border-radius: 5px; background-color: #fff; border: 1px solid #ddd; display: none; }
+        .correct { border-color: #28a745; background-color: #d4edda; color: #155724; }
+        .incorrect { border-color: #dc3545; background-color: #f8d7da; color: #721c24; }
+        .story { margin-top: 10px; padding-top: 10px; border-top: 1px dashed #aaa; font-size: 0.95em; text-align: left; line-height: 1.5; }
+        .story strong { color: #007bff; }
+        .controls { display: flex; justify-content: space-between; align-items: center; margin-top: 30px; }
+        .controls button { padding: 10px 25px; font-size: 1em; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s; }
+        .controls button:hover:not(:disabled) { background-color: #0056b3; }
+        .controls button:disabled { background-color: #ccc; cursor: not-allowed; }
+        .progress { text-align: center; margin-bottom: 20px; font-size: 1.1em; font-weight: bold; color: #4a90e2; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    
     <div class="week-navigation">
         <button id="tab-99" onclick="changeWeek(99)" class="all-quiz-btn">전체 퀴즈 (9~15주)</button>
-        
         <button id="tab-9" onclick="changeWeek(9)">9주차</button>
         <button id="tab-10" onclick="changeWeek(10)">10주차</button>
         <button id="tab-11" onclick="changeWeek(11)">11주차</button>
@@ -196,6 +48,7 @@
         <button id="tab-14" onclick="changeWeek(14)">14주차</button>
         <button id="tab-15" onclick="changeWeek(15)">15주차</button>
         
+        <a href="9주차_천간지지.html" class="btn analysis-btn">9주차 천간지지 퀴즈</a>
         <a href="불국사_석굴암_분석.html" class="btn analysis-btn">14주차 심층 분석</a>
         <a href="중용_단장.html" class="btn analysis-btn">15주차 심층 분석</a>
     </div>
@@ -291,28 +144,50 @@
 </div>
 
 <script>
-    // ==========================================================
-    // 1. 퀴즈 데이터 정의 (각 주차별 데이터)
-    // ==========================================================
     const allHanjaWords = {
         9: [
-            { hanja: "陰陽五行", answer: "음양오행", meaning: "음양설과 오행설이 결합된 동양의 우주관입니다. 우주의 변화 속에서 작용하여 복과 재앙, 길과 흉을 만든다고 보았습니다." },
-            { hanja: "陰陽", answer: "음양", meaning: "음기(陰氣)와 양기(陽氣)라는 상호보완적인 두 힘이 작용하여 온 우주의 발생, 변화, 소멸을 일으킨다는 사상입니다." },
-            { hanja: "陰氣", answer: "음기", meaning: "수동적, 추위, 어둠, 습함, 부드러운 것, 여성 등과 관련됩니다." },
-            { hanja: "陽氣", answer: "양기", meaning: "능동적, 더위, 밝음, 건조함, 굳은 것, 남성 등과 관련됩니다." },
-            { hanja: "五行", answer: "오행", meaning: "세상을 움직이는 다섯 가지의 힘이자 순환 운동입니다. 목(木), 화(火), 토(土), 금(金), 수(水)로 이루어져 있으며, 우주의 사물을 이 다섯 가지로 나누어 모든 변화에 적용했습니다." },
-            { hanja: "周易", answer: "주역", meaning: "주나라의 역법(점치는 방법)을 뜻합니다. 64괘를 통해 앞으로의 일을 예측하고, 행동을 도리에 맞게 변화하게 만드는 교화의 방법이었습니다." },
-            { hanja: "書經", answer: "서경", meaning: "옛날의 역사적 문헌으로, 훌륭한 군주와 현명한 신하의 이야기를 기록했습니다. '홍범편'에 오행(五行)에 대한 기록이 있습니다." },
-            { hanja: "五行相生說", answer: "오행상생설", meaning: "오행이 서로 돕고 영향을 주어 순환하는 관계를 설명합니다. (예: 水生木, 木生火, 火生土, 土生金, 金生水)." },
-            { hanja: "五行相克說", answer: "오행상극설", meaning: "오행이 서로 이기고 억제하는 관계를 설명합니다. (예: 金克木, 木克土, 土克水, 水克火, 火克金)." },
-            { hanja: "風水地理", answer: "풍수지리", meaning: "땅의 기를 살펴 땅의 성격을 읽어내는 방법입니다. 음양오행을 기초로 하며, 지형과 방위를 인간의 길흉화복과 연결하는 이론입니다." },
-            { hanja: "吉凶禍福", answer: "길흉화복", meaning: "상서롭고 흉악하고 재앙이 닥치고 복을 받는다는 뜻으로, 인간에게 닥쳐오는 여러 가지 상황을 점칠 때 사용됩니다." },
-            { hanja: "裨補寺塔說", answer: "비보사탑설", meaning: "도선이 창안한 이론으로, 산천 지세의 지리적 조건의 결함을 사찰이나 탑을 세워 보완하려는 취지의 지리론입니다. 이를 통해 지역의 균형적 발전을 매개로 국가의 안녕을 추구했습니다." },
-            { hanja: "干支", answer: "간지", meaning: "천간(天干)과 지지(地支)를 아울러 이르는 말입니다. 음양오행을 근본으로 하여 일상의 달력을 만드는 원리입니다." },
-            { hanja: "天干", answer: "천간", meaning: "십간(十干)이라고도 하며, 甲, 乙, 丙, 丁, 戊, 己, 庚, 辛, 壬, 癸의 10개입니다." },
-            { hanja: "地支", answer: "지지", meaning: "십이지(十二支)라고도 하며, 子, 丑, 寅, 卯, 辰, 巳, 午, 未, 申, 酉, 戌, 亥의 12개입니다." },
-            { hanja: "六十甲子", answer: "육십갑자", meaning: "10개의 천간과 12개의 지지를 결합한 총 60가지의 주기를 뜻합니다. 갑자, 을축, 병인, 정묘 등 연·월·일에 사용되며, 60년 주기가 끝까지 갔다가 다시 처음 '갑자'로 돌아옵니다." },
-            { hanja: "回甲/還甲", answer: "회갑/환갑", meaning: "갑(甲)으로 돌아왔다는 뜻으로, 61세가 되는 해를 의미합니다." }
+            // 기존 9주차 용어
+            { hanja: "陰陽五行", answer: "음양오행", meaning: "음양설과 오행설이 결합된 동양의 우주관입니다." },
+            { hanja: "陰陽", answer: "음양", meaning: "음기(陰氣)와 양기(陽氣)라는 상호보완적인 두 힘입니다." },
+            { hanja: "陰氣", answer: "음기", meaning: "수동적, 추위, 어둠, 습함, 여성 등과 관련됩니다." },
+            { hanja: "陽氣", answer: "양기", meaning: "능동적, 더위, 밝음, 건조함, 남성 등과 관련됩니다." },
+            { hanja: "五行", answer: "오행", meaning: "세상을 움직이는 다섯 가지의 힘(목, 화, 토, 금, 수)입니다." },
+            { hanja: "周易", answer: "주역", meaning: "주나라의 역법(점치는 방법)을 뜻합니다." },
+            { hanja: "書經", answer: "서경", meaning: "옛날의 역사적 문헌으로, '홍범편'에 오행(五行) 기록이 있습니다." },
+            { hanja: "五行相生說", answer: "오행상생설", meaning: "오행이 서로 돕고 영향을 주어 순환하는 관계입니다 (예: 수생목)." },
+            { hanja: "五行相克說", answer: "오행상극설", meaning: "오행이 서로 이기고 억제하는 관계입니다 (예: 수극화)." },
+            { hanja: "風水地理", answer: "풍수지리", meaning: "땅의 기를 살펴 지형과 방위를 인간의 길흉화복과 연결하는 이론입니다." },
+            { hanja: "吉凶禍福", answer: "길흉화복", meaning: "상서롭고, 흉악하고, 재앙이 닥치고, 복을 받는다는 뜻입니다." },
+            { hanja: "裨補寺塔說", answer: "비보사탑설", meaning: "지리적 결함을 사찰이나 탑으로 보완하려는 도선의 지리론입니다." },
+            { hanja: "干支", answer: "간지", meaning: "천간(天干)과 지지(地支)를 아울러 이르는 말입니다." },
+            { hanja: "天干", answer: "천간", meaning: "갑, 을, 병, 정 등 10개의 하늘의 기운입니다." },
+            { hanja: "地支", answer: "지지", meaning: "자, 축, 인, 묘 등 12개의 땅의 기운입니다." },
+            { hanja: "六十甲子", answer: "육십갑자", meaning: "10간과 12지를 결합한 총 60가지의 주기입니다." },
+            { hanja: "回甲/還甲", answer: "회갑/환갑", meaning: "60년 주기가 돌아와 61세가 되는 해를 의미합니다." },
+            // 추가된 천간(10개)
+            { hanja: "甲", answer: "갑", meaning: "갑옷/첫째 천간. 오행은 목(木), 양(陽)입니다." },
+            { hanja: "乙", answer: "을", meaning: "새/둘째 천간. 오행은 목(木), 음(陰)입니다." },
+            { hanja: "丙", answer: "병", meaning: "남녘/셋째 천간. 오행은 화(火), 양(陽)입니다." },
+            { hanja: "丁", answer: "정", meaning: "고무래/넷째 천간. 오행은 화(火), 음(陰)입니다." },
+            { hanja: "戊", answer: "무", meaning: "다섯째 천간. 오행은 토(土), 양(陽)입니다." },
+            { hanja: "己", answer: "기", meaning: "몸/여섯째 천간. 오행은 토(土), 음(陰)입니다." },
+            { hanja: "庚", answer: "경", meaning: "일곱째 천간. 오행은 금(金), 양(陽)입니다." },
+            { hanja: "辛", answer: "신", meaning: "매울/여덟째 천간. 오행은 금(金), 음(陰)입니다." },
+            { hanja: "壬", answer: "임", meaning: "아홉째 천간. 오행은 수(水), 양(陽)입니다." },
+            { hanja: "癸", answer: "계", meaning: "열째 천간. 오행은 수(水), 음(陰)입니다." },
+            // 추가된 지지(12개)
+            { hanja: "子", answer: "자", meaning: "아들/첫째 지지. 띠: 쥐, 시간: 23:00~01:00 (자정)." },
+            { hanja: "丑", answer: "축", meaning: "소/둘째 지지. 띠: 소, 시간: 01:00~03:00." },
+            { hanja: "寅", answer: "인", meaning: "범/셋째 지지. 띠: 호랑이, 시간: 03:00~05:00." },
+            { hanja: "卯", answer: "묘", meaning: "토끼/넷째 지지. 띠: 토끼, 시간: 05:00~07:00." },
+            { hanja: "辰", answer: "진", meaning: "용/별/다섯째 지지. 띠: 용, 시간: 07:00~09:00." },
+            { hanja: "巳", answer: "사", meaning: "뱀/여섯째 지지. 띠: 뱀, 시간: 09:00~11:00." },
+            { hanja: "午", answer: "오", meaning: "낮/일곱째 지지. 띠: 말, 시간: 11:00~13:00 (정오)." },
+            { hanja: "未", answer: "미", meaning: "아닐/여덟째 지지. 띠: 양, 시간: 13:00~15:00." },
+            { hanja: "申", answer: "신", meaning: "펼/아홉째 지지. 띠: 원숭이, 시간: 15:00~17:00." },
+            { hanja: "酉", answer: "유", meaning: "닭/열째 지지. 띠: 닭, 시간: 17:00~19:00." },
+            { hanja: "戌", answer: "술", meaning: "개/열한째 지지. 띠: 개, 시간: 19:00~21:00." },
+            { hanja: "亥", answer: "해", meaning: "돼지/열두째 지지. 띠: 돼지, 시간: 21:00~23:00." }
         ],
         10: [
             { hanja: "黑字", answer: "흑자", meaning: "수입이 지출보다 많을 때(잉여 이익)를 의미하며, 회계 장부 기입 시 흑색 잉크로 표시하는 데서 유래했습니다." },
@@ -357,7 +232,7 @@
             { hanja: "服", answer: "복", meaning: "'복장'의 의미에서 사용되는 '옷'입니다. 원래는 '복종하다'에서 (몸을) 다스리다, 옷을 입다, 보호하다는 뜻으로 파생되었습니다." },
             { hanja: "洋襪", answer: "양말", meaning: "'서양에서 온 버선'이라는 뜻입니다." },
             { hanja: "高捧", answer: "고봉", meaning: "곡식을 됫박에 담을 때나 밥을 공기에 '높이 쌓아 올려 담는 모양'을 의미합니다." },
-            { hanja: "神仙爐", answer: "신선로", meaning: "'신선의 화로'라는 뜻입니다. 그릇 안에 숯을 피워 다 먹을 때까지 식지 않게 하는 고급 요리입니다. 연산군 때 선비 정희량의 일화에서 유래되었습니다." },
+            { hanja: "神仙爐", answer: "신선로", meaning: "'신선의 화로'라는 뜻입니다. 그릇 안에 숯을 피워 다 먹을 때까지 식지 않게 하는 고급 요리입니다." },
             { hanja: "五味子", answer: "오미자", meaning: "단맛, 신맛, 쓴맛, 짠맛, 매운맛 '다섯 가지 맛이 동시에 느껴지는 씨앗'입니다." },
             { hanja: "堂", answer: "당", meaning: "사랑채처럼 손님을 접대하는 장소를 의미하며, 명예나 존경을 나타내는 뜻도 있습니다." },
             { hanja: "室", answer: "실", meaning: "집주인이 잠을 자는 곳, 즉 안쪽에 있는 방을 의미합니다." },
@@ -470,24 +345,15 @@
         ]
     };
 
-    // 10주차부터 15주차까지의 모든 한자어를 합쳐 '99'번 인덱스에 저장 (9주차도 포함)
+    // 9주차부터 15주차까지의 모든 한자어를 합쳐 '99'번 인덱스에 저장 (총 185문제)
     allHanjaWords[99] = [];
     for (let i = 9; i <= 15; i++) {
         allHanjaWords[99].push(...allHanjaWords[i]);
     }
-    // 총 문제 수: 21 + 34 + 25 + 29 + 22 + 18 + 14 = 163개 (21 + 142)
 
-    // ==========================================================
-    // 2. 전역 상태 관리
-    // ==========================================================
-    // quizState[weekNum] = { questions: [...], currentIndex: 0, answeredState: {...} }
     const quizState = {};
-    let currentWeek = 9; // 현재 활성화된 주차 (초기값 9)
+    let currentWeek = 9; // 9주차가 기본 활성화
 
-    // ==========================================================
-    // 3. 유틸리티 함수
-    // ==========================================================
-    // 배열을 섞는 함수 (피셔-예이츠 알고리즘)
     function shuffleArray(array) {
         for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -496,11 +362,7 @@
         return array;
     }
 
-    // 결과 HTML 생성 함수
     function getResultHtml(q, isCorrect) {
-        // q.meaning에 주차 정보 추가 (전체 퀴즈 모드에서는 주차 정보를 생략)
-        let titleText = currentWeek === 99 ? '문제' : `${currentWeek}주차 문제`;
-
         if (isCorrect) {
             return `
                 ✅ **정답입니다!**
@@ -520,20 +382,13 @@
         }
     }
 
-    // ==========================================================
-    // 4. 메인 퀴즈 로직
-    // ==========================================================
-
-    // 퀴즈 시작 함수
     function startQuiz(weekNum) {
-        // 상태 초기화
         quizState[weekNum] = {
             questions: shuffleArray([...allHanjaWords[weekNum]]), 
             currentIndex: 0,
             answeredState: {}
         };
         
-        // 버튼 표시 및 숨김
         document.getElementById(`retryBtn-${weekNum}`).style.display = 'none';
         document.getElementById(`prevBtn-${weekNum}`).style.display = 'block';
         document.getElementById(`nextBtn-${weekNum}`).style.display = 'block';
@@ -541,7 +396,6 @@
         loadQuestion(weekNum);
     }
 
-    // 문제 로드 함수
     function loadQuestion(weekNum) {
         const state = quizState[weekNum];
         const totalQuestions = state.questions.length;
@@ -578,7 +432,6 @@
         updateControls(weekNum);
     }
 
-    // 정답 확인 함수
     function checkAnswer(weekNum) {
         const state = quizState[weekNum];
         const q = state.questions[state.currentIndex];
@@ -588,14 +441,12 @@
         const correctAnswer = q.answer.toLowerCase().replace(/\s/g, "");
         const isCorrect = userAnswer === correctAnswer;
 
-        // 상태 업데이트
         state.answeredState[state.currentIndex] = { 
             answered: true, 
             correct: isCorrect, 
             input: input.value
         };
 
-        // 화면 업데이트
         input.disabled = true;
         document.getElementById(`questionBox-${weekNum}`).querySelector('.input-group button').style.display = 'none';
         
@@ -606,14 +457,12 @@
         updateControls(weekNum);
     }
 
-    // Enter 키로 정답 확인
     function checkEnter(event, weekNum) {
         if (event.key === 'Enter' && !document.getElementById(`answerInput-${weekNum}`)?.disabled) {
             checkAnswer(weekNum);
         }
     }
     
-    // 현재 문제 입력값 저장 유틸리티 함수
     function saveCurrentInput(weekNum) {
         const inputElement = document.getElementById(`answerInput-${weekNum}`);
         const state = quizState[weekNum];
@@ -625,7 +474,6 @@
         }
     }
 
-    // 다음 문제로 이동
     function nextQuestion(weekNum) {
         const state = quizState[weekNum];
         saveCurrentInput(weekNum);
@@ -640,7 +488,6 @@
         }
     }
 
-    // 이전 문제로 이동
     function prevQuestion(weekNum) {
         const state = quizState[weekNum];
         saveCurrentInput(weekNum);
@@ -651,7 +498,6 @@
         }
     }
     
-    // 버튼 상태 및 진행률 업데이트
     function updateControls(weekNum) {
         const state = quizState[weekNum];
         const totalQuestions = state.questions.length;
@@ -661,13 +507,9 @@
         const prevBtn = document.getElementById(`prevBtn-${weekNum}`);
         const nextBtn = document.getElementById(`nextBtn-${weekNum}`);
 
-        // 진행률 업데이트
         progressDisplay.textContent = `진행률: ${currentNum} / ${totalQuestions}`;
-        
-        // 이전 버튼 상태
         prevBtn.disabled = (state.currentIndex === 0);
 
-        // 다음 버튼 텍스트와 상태
         const isAnswered = state.answeredState[state.currentIndex]?.answered;
         if (state.currentIndex === totalQuestions - 1) {
             nextBtn.textContent = isAnswered ? '결과 보기' : '정답 확인 필요';
@@ -678,12 +520,9 @@
         }
     }
 
-    // 최종 결과 표시
     function showResults(weekNum) {
         const state = quizState[weekNum];
         const totalQuestions = state.questions.length;
-        
-        // 맞은 개수 최종 계산 (답변한 문제만 필터링)
         const finalScore = Object.values(state.answeredState).filter(q => q.correct).length;
 
         const questionBox = document.getElementById(`questionBox-${weekNum}`);
@@ -706,52 +545,34 @@
         retryBtn.style.display = 'block'; 
     }
     
-    // 주차 변경 함수 (탭 전환)
     function changeWeek(weekNum) {
-        // 모든 탭과 섹션을 비활성화 상태로 초기화
         for (let i = 9; i <= 15; i++) {
-            document.getElementById(`tab-${i}`).classList.remove('current-week');
-            document.getElementById(`quiz-${i}`).classList.remove('active');
+            document.getElementById(`tab-${i}`)?.classList.remove('current-week');
+            document.getElementById(`quiz-${i}`)?.classList.remove('active');
         }
-        document.getElementById(`tab-99`).classList.remove('current-week');
-        document.getElementById(`quiz-99`).classList.remove('active');
+        document.getElementById(`tab-99`)?.classList.remove('current-week');
+        document.getElementById(`quiz-99`)?.classList.remove('active');
         
-        // 새 탭 활성화
         document.getElementById(`tab-${weekNum}`).classList.add('current-week');
         document.getElementById(`quiz-${weekNum}`).classList.add('active');
         currentWeek = weekNum;
         
-        // 전체 퀴즈 버튼 스타일 조정
         if (weekNum === 99) {
             document.getElementById(`tab-99`).classList.remove('quiz-btn');
             document.getElementById(`tab-99`).classList.add('all-quiz-btn');
         } else {
-            // 다른 주차 탭 클릭 시, 전체 퀴즈 탭을 기본 버튼 스타일로 되돌림
              document.getElementById(`tab-99`).classList.remove('all-quiz-btn');
              document.getElementById(`tab-99`).classList.add('quiz-btn');
         }
 
-        // 해당 주차 퀴즈 로드
         if (!quizState[weekNum] || Object.keys(quizState[weekNum].answeredState).length === 0) {
             startQuiz(weekNum);
         } else {
-            loadQuestion(weekNum); // 이미 풀던 퀴즈가 있다면 이어서 로드
+            loadQuestion(weekNum); 
         }
     }
     
-    // 페이지 로드 시 초기 설정
     window.onload = function() {
-        // 모든 퀴즈 데이터에 99번(전체) 데이터가 정확히 포함되었는지 확인
-        if (allHanjaWords[99].length === 163) {
-            console.log("Total 163 quiz items loaded successfully.");
-        } else {
-             console.error("Quiz data loading error. Total items:", allHanjaWords[99].length);
-        }
-        
-        // 초기화 후 9주차 활성화 (currentWeek = 9)
-        currentWeek = 9;
-        
-        // 모든 섹션을 초기 비활성화 상태로 시작
         for (let i = 9; i <= 15; i++) {
             document.getElementById(`quiz-${i}`).classList.remove('active');
             document.getElementById(`tab-${i}`).classList.remove('current-week');
@@ -760,12 +581,10 @@
         document.getElementById(`tab-99`).classList.remove('current-week');
         document.getElementById(`tab-99`).classList.add('all-quiz-btn');
 
-
-        // 9주차를 기본 활성화
-        document.getElementById(`quiz-${currentWeek}`).classList.add('active');
-        document.getElementById(`tab-${currentWeek}`).classList.add('current-week');
+        document.getElementById(`quiz-9`).classList.add('active');
+        document.getElementById(`tab-9`).classList.add('current-week');
         
-        startQuiz(currentWeek);
+        startQuiz(9);
     };
 </script>
 
