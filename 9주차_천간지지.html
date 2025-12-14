@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>9주차 천간과 지지 퀴즈</title>
+    <style>
+        body { font-family: 'Malgun Gothic', sans-serif; background-color: #f4f4f9; color: #333; margin: 0; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
+        .week-navigation { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
+        .week-navigation a.btn { padding: 10px 18px; font-size: 1em; color: white; background-color: #1a5276; border-radius: 5px; text-decoration: none; font-weight: bold; }
+        .week-navigation a.btn:hover { background-color: #154060; }
+        .question-box { background-color: #e9f7ff; border: 1px solid #cceeff; padding: 20px; margin-bottom: 20px; border-radius: 8px; min-height: 250px; }
+        .question-box h2 { font-size: 2.5em; text-align: center; color: #007bff; margin-top: 0; margin-bottom: 15px; }
+        .input-group { display: flex; justify-content: center; gap: 10px; margin-bottom: 15px; }
+        .input-group input { padding: 10px; font-size: 1.2em; border: 2px solid #ccc; border-radius: 5px; width: 50%; text-align: center; }
+        .input-group button { padding: 10px 20px; font-size: 1.1em; background-color: #5cb85c; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        .result { margin-top: 15px; padding: 15px; border-radius: 5px; display: none; }
+        .correct { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .incorrect { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .controls { display: flex; justify-content: space-between; margin-top: 30px; }
+        .controls button { padding: 10px 25px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        .controls button:disabled { background-color: #ccc; cursor: not-allowed; }
+        .progress { text-align: center; margin-bottom: 20px; font-weight: bold; color: #4a90e2; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="week-navigation">
+        <a href="All.html" class="btn">🏠 전체 퀴즈 목록 (All.html)</a>
+    </div>
+    <h1 style="text-align: center; color: #4a90e2;">9주차 천간(天干)과 지지(地支) 퀴즈 🌌</h1>
+    <div class="progress" id="progress"></div>
+    <div class="question-box" id="questionBox"></div>
+    <div class="controls">
+        <button id="prevBtn" onclick="prevQuestion()">이전</button>
+        <button id="nextBtn" onclick="nextQuestion()">다음 문제</button>
+        <button id="retryBtn" onclick="startQuiz()" style="display:none;">다시 시작</button>
+    </div>
+</div>
+
+<script>
+    const quizData = [
+        { hanja: "甲", answer: "갑", meaning: "갑옷/첫째 천간. 오행은 목(木), 양(陽)입니다." },
+        { hanja: "乙", answer: "을", meaning: "새/둘째 천간. 오행은 목(木), 음(陰)입니다." },
+        { hanja: "丙", answer: "병", meaning: "남녘/셋째 천간. 오행은 화(火), 양(陽)입니다." },
+        { hanja: "丁", answer: "정", meaning: "고무래/넷째 천간. 오행은 화(火), 음(陰)입니다." },
+        { hanja: "戊", answer: "무", meaning: "다섯째 천간. 오행은 토(土), 양(陽)입니다." },
+        { hanja: "己", answer: "기", meaning: "몸/여섯째 천간. 오행은 토(土), 음(陰)입니다." },
+        { hanja: "庚", answer: "경", meaning: "일곱째 천간. 오행은 금(金), 양(陽)입니다." },
+        { hanja: "辛", answer: "신", meaning: "매울/여덟째 천간. 오행은 금(金), 음(陰)입니다." },
+        { hanja: "壬", answer: "임", meaning: "아홉째 천간. 오행은 수(水), 양(陽)입니다." },
+        { hanja: "癸", answer: "계", meaning: "열째 천간. 오행은 수(水), 음(陰)입니다." },
+        { hanja: "子", answer: "자", meaning: "아들/첫째 지지. 띠: 쥐, 시간: 23:00~01:00 (자정)." },
+        { hanja: "丑", answer: "축", meaning: "소/둘째 지지. 띠: 소, 시간: 01:00~03:00." },
+        { hanja: "寅", answer: "인", meaning: "범/셋째 지지. 띠: 호랑이, 시간: 03:00~05:00." },
+        { hanja: "卯", answer: "묘", meaning: "토끼/넷째 지지. 띠: 토끼, 시간: 05:00~07:00." },
+        { hanja: "辰", answer: "진", meaning: "용/별/다섯째 지지. 띠: 용, 시간: 07:00~09:00." },
+        { hanja: "巳", answer: "사", meaning: "뱀/여섯째 지지. 띠: 뱀, 시간: 09:00~11:00." },
+        { hanja: "午", answer: "오", meaning: "낮/일곱째 지지. 띠: 말, 시간: 11:00~13:00 (정오)." },
+        { hanja: "未", answer: "미", meaning: "아닐/여덟째 지지. 띠: 양, 시간: 13:00~15:00." },
+        { hanja: "申", answer: "신", meaning: "펼/아홉째 지지. 띠: 원숭이, 시간: 15:00~17:00." },
+        { hanja: "酉", answer: "유", meaning: "닭/열째 지지. 띠: 닭, 시간: 17:00~19:00." },
+        { hanja: "戌", answer: "술", meaning: "개/열한째 지지. 띠: 개, 시간: 19:00~21:00." },
+        { hanja: "亥", answer: "해", meaning: "돼지/열두째 지지. 띠: 돼지, 시간: 21:00~23:00." }
+    ];
+
+    let questions = [];
+    let currentIndex = 0;
+    let answeredState = {};
+
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    function startQuiz() {
+        questions = shuffleArray([...quizData]);
+        currentIndex = 0;
+        answeredState = {};
+        document.getElementById('retryBtn').style.display = 'none';
+        document.getElementById('prevBtn').style.display = 'block';
+        document.getElementById('nextBtn').style.display = 'block';
+        loadQuestion();
+    }
+
+    function loadQuestion() {
+        const total = questions.length;
+        if (currentIndex < 0) currentIndex = 0;
+        if (currentIndex >= total) {
+            showResults();
+            return;
+        }
+
+        const q = questions[currentIndex];
+        const state = answeredState[currentIndex] || { answered: false, correct: false, input: '' };
+        const checkButton = state.answered ? '' : `<button onclick="checkAnswer()">정답 확인</button>`;
+        const inputDisabled = state.answered ? 'disabled' : '';
+
+        document.getElementById('questionBox').innerHTML = `
+            <h2>${q.hanja}</h2>
+            <div class="input-group">
+                <input type="text" id="answerInput" placeholder="음 입력" value="${state.input}" onkeypress="if(event.key==='Enter') checkAnswer()" ${inputDisabled}>
+                ${checkButton}
+            </div>
+            <div class="result ${state.answered ? (state.correct ? 'correct' : 'incorrect') : ''}" style="display: ${state.answered ? 'block' : 'none'};">
+                ${state.answered ? (state.correct ? '✅ <b>정답!</b>' : `❌ <b>오답!</b> 정답: ${q.answer}`) : ''}
+                <br><br>${q.meaning}
+            </div>
+        `;
+        
+        if (!state.answered) document.getElementById('answerInput').focus();
+        updateControls();
+    }
+
+    function checkAnswer() {
+        const q = questions[currentIndex];
+        const input = document.getElementById('answerInput');
+        const isCorrect = input.value.trim() === q.answer;
+        answeredState[currentIndex] = { answered: true, correct: isCorrect, input: input.value };
+        loadQuestion();
+    }
+
+    function nextQuestion() {
+        if (currentIndex < questions.length - 1) {
+            currentIndex++;
+            loadQuestion();
+        } else if (answeredState[currentIndex]?.answered) {
+            showResults();
+        }
+    }
+
+    function prevQuestion() {
+        if (currentIndex > 0) {
+            currentIndex--;
+            loadQuestion();
+        }
+    }
+
+    function updateControls() {
+        document.getElementById('progress').innerText = `진행률: ${currentIndex + 1} / ${questions.length}`;
+        document.getElementById('prevBtn').disabled = currentIndex === 0;
+        const isAnswered = answeredState[currentIndex]?.answered;
+        const nextBtn = document.getElementById('nextBtn');
+        if (currentIndex === questions.length - 1) {
+            nextBtn.textContent = isAnswered ? '결과 보기' : '정답 확인 필요';
+            nextBtn.disabled = !isAnswered;
+        } else {
+            nextBtn.textContent = '다음 문제';
+            nextBtn.disabled = false;
+        }
+    }
+
+    function showResults() {
+        const score = Object.values(answeredState).filter(s => s.correct).length;
+        document.getElementById('questionBox').innerHTML = `<h2>🎉 퀴즈 완료!</h2><p>총 ${questions.length} 문제 중 <b>${score}</b> 개 맞힘!</p>`;
+        document.getElementById('prevBtn').style.display = 'none';
+        document.getElementById('nextBtn').style.display = 'none';
+        document.getElementById('retryBtn').style.display = 'block';
+    }
+
+    window.onload = startQuiz;
+</script>
+
+</body>
+</html>
