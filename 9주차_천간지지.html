@@ -3,25 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>9주차 천간과 지지 퀴즈</title>
+    <title>9주차 천간과 지지 심화 퀴즈</title>
     <style>
         body { font-family: 'Malgun Gothic', sans-serif; background-color: #f4f4f9; color: #333; margin: 0; padding: 20px; }
         .container { max-width: 800px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
         .week-navigation { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
-        .week-navigation a.btn { padding: 10px 18px; font-size: 1em; color: white; background-color: #1a5276; border-radius: 5px; text-decoration: none; font-weight: bold; }
-        .week-navigation a.btn:hover { background-color: #154060; }
-        .question-box { background-color: #e9f7ff; border: 1px solid #cceeff; padding: 20px; margin-bottom: 20px; border-radius: 8px; min-height: 250px; }
+        .week-navigation a.btn, .mode-btn { padding: 10px 18px; font-size: 1em; color: white; background-color: #1a5276; border: none; border-radius: 5px; text-decoration: none; font-weight: bold; cursor: pointer; }
+        .week-navigation a.btn:hover, .mode-btn:hover { background-color: #154060; }
+        
+        .mode-selection { text-align: center; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #ddd; }
+        .mode-btn { background-color: #5bc0de; margin: 0 5px; }
+        .mode-btn.active { background-color: #007bff; }
+
+        .question-box { background-color: #e9f7ff; border: 1px solid #cceeff; padding: 20px; margin-bottom: 20px; border-radius: 8px; min-height: 200px; }
         .question-box h2 { font-size: 2.5em; text-align: center; color: #007bff; margin-top: 0; margin-bottom: 15px; }
-        .input-group { display: flex; justify-content: center; gap: 10px; margin-bottom: 15px; }
-        .input-group input { padding: 10px; font-size: 1.2em; border: 2px solid #ccc; border-radius: 5px; width: 50%; text-align: center; }
+        .question-text { text-align: center; font-size: 1.2em; margin-bottom: 20px; }
+
+        .input-group { display: flex; justify-content: center; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
+        .input-group input { padding: 10px; font-size: 1.1em; border: 2px solid #ccc; border-radius: 5px; width: 120px; text-align: center; }
         .input-group button { padding: 10px 20px; font-size: 1.1em; background-color: #5cb85c; color: white; border: none; border-radius: 5px; cursor: pointer; }
-        .result { margin-top: 15px; padding: 15px; border-radius: 5px; display: none; }
+        
+        .result { margin-top: 15px; padding: 15px; border-radius: 5px; display: none; text-align: center; }
         .correct { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
         .incorrect { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        
         .controls { display: flex; justify-content: space-between; margin-top: 30px; }
         .controls button { padding: 10px 25px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
         .controls button:disabled { background-color: #ccc; cursor: not-allowed; }
         .progress { text-align: center; margin-bottom: 20px; font-weight: bold; color: #4a90e2; }
+
+        /* 간지 계산 퀴즈 전용 스타일 */
+        .ganji-inputs { display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .ganji-label { font-weight: bold; color: #555; }
     </style>
 </head>
 <body>
@@ -30,9 +43,17 @@
     <div class="week-navigation">
         <a href="All.html" class="btn">🏠 전체 퀴즈 목록 (All.html)</a>
     </div>
-    <h1 style="text-align: center; color: #4a90e2;">9주차 천간(天干)과 지지(地支) 퀴즈 🌌</h1>
+
+    <div class="mode-selection">
+        <button class="mode-btn active" onclick="switchMode('basic')">기본 퀴즈 (뜻/음)</button>
+        <button class="mode-btn" onclick="switchMode('cycle')">🔄 연도 계산 퀴즈 (전/후)</button>
+    </div>
+
+    <h1 id="quizTitle" style="text-align: center; color: #4a90e2;">9주차 천간(天干)과 지지(地支) 퀴즈 🌌</h1>
+    
     <div class="progress" id="progress"></div>
     <div class="question-box" id="questionBox"></div>
+    
     <div class="controls">
         <button id="prevBtn" onclick="prevQuestion()">이전</button>
         <button id="nextBtn" onclick="nextQuestion()">다음 문제</button>
@@ -41,7 +62,8 @@
 </div>
 
 <script>
-    const quizData = [
+    // --- 데이터 정의 ---
+    const basicQuizData = [
         { hanja: "甲", answer: "갑", meaning: "갑옷/첫째 천간. 오행은 목(木), 양(陽)입니다." },
         { hanja: "乙", answer: "을", meaning: "새/둘째 천간. 오행은 목(木), 음(陰)입니다." },
         { hanja: "丙", answer: "병", meaning: "남녘/셋째 천간. 오행은 화(火), 양(陽)입니다." },
@@ -66,10 +88,16 @@
         { hanja: "亥", answer: "해", meaning: "돼지/열두째 지지. 띠: 돼지, 시간: 21:00~23:00." }
     ];
 
+    const cheongan = ['갑', '을', '병', '정', '무', '기', '경', '신', '임', '계'];
+    const jiji = ['자', '축', '인', '묘', '진', '사', '오', '미', '신', '유', '술', '해'];
+
+    // --- 상태 변수 ---
+    let currentMode = 'basic'; // 'basic' or 'cycle'
     let questions = [];
     let currentIndex = 0;
     let answeredState = {};
 
+    // --- 유틸리티 함수 ---
     function shuffleArray(array) {
         for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -78,16 +106,70 @@
         return array;
     }
 
+    // --- 모드 전환 ---
+    function switchMode(mode) {
+        currentMode = mode;
+        // 버튼 활성화 스타일 변경
+        document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+        if(mode === 'basic') document.querySelector('.mode-btn:nth-child(1)').classList.add('active');
+        else document.querySelector('.mode-btn:nth-child(2)').classList.add('active');
+
+        startQuiz();
+    }
+
+    // --- 퀴즈 생성 로직 (연도 계산용) ---
+    function generateCycleQuestions(count = 10) {
+        let generated = [];
+        for(let i=0; i<count; i++) {
+            let sIdx = Math.floor(Math.random() * 10);
+            let jIdx = Math.floor(Math.random() * 12);
+            
+            // 현재 년도
+            let current = cheongan[sIdx] + jiji[jIdx]; // 예: 갑자
+
+            // 이전 년도 (-1)
+            let prevS = (sIdx - 1 + 10) % 10;
+            let prevJ = (jIdx - 1 + 12) % 12;
+            let prev = cheongan[prevS] + jiji[prevJ]; // 예: 계해
+
+            // 다음 년도 (+1)
+            let nextS = (sIdx + 1) % 10;
+            let nextJ = (jIdx + 1) % 12;
+            let next = cheongan[nextS] + jiji[nextJ]; // 예: 을축
+
+            generated.push({
+                type: 'cycle',
+                question: current + "년", // 갑자년
+                prevAnswer: prev,
+                nextAnswer: next,
+                stemIdx: sIdx,
+                branchIdx: jIdx
+            });
+        }
+        return generated;
+    }
+
+    // --- 퀴즈 시작 ---
     function startQuiz() {
-        questions = shuffleArray([...quizData]);
+        if (currentMode === 'basic') {
+            questions = shuffleArray([...basicQuizData]);
+            document.getElementById('quizTitle').innerText = "9주차 천간(天干)과 지지(地支) 퀴즈 🌌";
+        } else {
+            questions = generateCycleQuestions(10); // 10문제 생성
+            document.getElementById('quizTitle').innerText = "🔄 육십갑자 전후 년도 맞추기 퀴즈";
+        }
+        
         currentIndex = 0;
         answeredState = {};
+        
         document.getElementById('retryBtn').style.display = 'none';
         document.getElementById('prevBtn').style.display = 'block';
         document.getElementById('nextBtn').style.display = 'block';
+        
         loadQuestion();
     }
 
+    // --- 문제 로드 ---
     function loadQuestion() {
         const total = questions.length;
         if (currentIndex < 0) currentIndex = 0;
@@ -101,30 +183,102 @@
         const checkButton = state.answered ? '' : `<button onclick="checkAnswer()">정답 확인</button>`;
         const inputDisabled = state.answered ? 'disabled' : '';
 
-        document.getElementById('questionBox').innerHTML = `
-            <h2>${q.hanja}</h2>
-            <div class="input-group">
-                <input type="text" id="answerInput" placeholder="음 입력" value="${state.input}" onkeypress="if(event.key==='Enter') checkAnswer()" ${inputDisabled}>
-                ${checkButton}
-            </div>
-            <div class="result ${state.answered ? (state.correct ? 'correct' : 'incorrect') : ''}" style="display: ${state.answered ? 'block' : 'none'};">
-                ${state.answered ? (state.correct ? '✅ <b>정답!</b>' : `❌ <b>오답!</b> 정답: ${q.answer}`) : ''}
-                <br><br>${q.meaning}
-            </div>
-        `;
+        const box = document.getElementById('questionBox');
         
-        if (!state.answered) document.getElementById('answerInput').focus();
+        if (currentMode === 'basic') {
+            // 기본 퀴즈 UI
+            box.innerHTML = `
+                <h2>${q.hanja}</h2>
+                <div class="input-group">
+                    <input type="text" id="answerInput" placeholder="음 입력" value="${state.input}" onkeypress="if(event.key==='Enter') checkAnswer()" ${inputDisabled}>
+                    ${checkButton}
+                </div>
+                <div class="result ${state.answered ? (state.correct ? 'correct' : 'incorrect') : ''}" style="display: ${state.answered ? 'block' : 'none'};">
+                    ${state.answered ? (state.correct ? '✅ <b>정답!</b>' : `❌ <b>오답!</b> 정답: ${q.answer}`) : ''}
+                    <br><br>${q.meaning}
+                </div>
+            `;
+            if (!state.answered) setTimeout(() => document.getElementById('answerInput').focus(), 10);
+
+        } else {
+            // 연도 계산 퀴즈 UI
+            let prevInputVal = state.input ? state.input.prev : '';
+            let nextInputVal = state.input ? state.input.next : '';
+
+            box.innerHTML = `
+                <div class="question-text">
+                    올해가 <strong style="color:#007bff; font-size:1.5em;">${q.question}</strong>이라면,<br>
+                    그 <strong>전 해</strong>와 <strong>다음 해</strong>는 무엇일까요?
+                </div>
+                <div class="input-group ganji-inputs">
+                    <div>
+                        <span class="ganji-label">◀ 전 해</span><br>
+                        <input type="text" id="prevInput" placeholder="예: 갑자" value="${prevInputVal}" ${inputDisabled}>
+                    </div>
+                    <div style="font-size:1.5em;">↔</div>
+                    <div>
+                        <span class="ganji-label">다음 해 ▶</span><br>
+                        <input type="text" id="nextInput" placeholder="예: 병인" value="${nextInputVal}" onkeypress="if(event.key==='Enter') checkAnswer()" ${inputDisabled}>
+                    </div>
+                </div>
+                <div style="text-align:center; margin-top:10px;">${checkButton}</div>
+                
+                <div class="result ${state.answered ? (state.correct ? 'correct' : 'incorrect') : ''}" style="display: ${state.answered ? 'block' : 'none'};">
+                    ${state.answered ? getCycleResultHtml(q, state.correct) : ''}
+                </div>
+            `;
+            if (!state.answered) setTimeout(() => document.getElementById('prevInput').focus(), 10);
+        }
+        
         updateControls();
     }
 
-    function checkAnswer() {
-        const q = questions[currentIndex];
-        const input = document.getElementById('answerInput');
-        const isCorrect = input.value.trim() === q.answer;
-        answeredState[currentIndex] = { answered: true, correct: isCorrect, input: input.value };
-        loadQuestion();
+    function getCycleResultHtml(q, isCorrect) {
+        if (isCorrect) {
+            return `✅ <b>정답입니다!</b><br>(${q.prevAnswer}년) ← (${q.question}) → (${q.nextAnswer}년)`;
+        } else {
+            return `❌ <b>아쉽네요.</b><br>
+                    정답: <b>전 해: ${q.prevAnswer}</b>, <b>다음 해: ${q.nextAnswer}</b><br>
+                    (${q.prevAnswer}년) ← (${q.question}) → (${q.nextAnswer}년)`;
+        }
     }
 
+    // --- 정답 확인 ---
+    function checkAnswer() {
+        const q = questions[currentIndex];
+        let isCorrect = false;
+        let userInput = '';
+
+        if (currentMode === 'basic') {
+            const inputEl = document.getElementById('answerInput');
+            userInput = inputEl.value.trim();
+            isCorrect = (userInput === q.answer);
+            answeredState[currentIndex] = { answered: true, correct: isCorrect, input: userInput };
+            inputEl.disabled = true;
+        } else {
+            const prevEl = document.getElementById('prevInput');
+            const nextEl = document.getElementById('nextInput');
+            const uPrev = prevEl.value.trim().replace(/년$/, ''); // '갑자년' 입력 시 '갑자'로 처리
+            const uNext = nextEl.value.trim().replace(/년$/, '');
+            
+            // 둘 다 맞아야 정답 처리
+            isCorrect = (uPrev === q.prevAnswer && uNext === q.nextAnswer);
+            
+            userInput = { prev: prevEl.value, next: nextEl.value };
+            answeredState[currentIndex] = { answered: true, correct: isCorrect, input: userInput };
+            
+            prevEl.disabled = true;
+            nextEl.disabled = true;
+        }
+
+        // 버튼 숨김 및 결과 표시
+        const btn = document.querySelector('.input-group button') || document.querySelector('.question-box button'); // selector fallback
+        if(btn) btn.style.display = 'none';
+        
+        loadQuestion(); // 화면 갱신 (결과 표시 포함)
+    }
+
+    // --- 내비게이션 ---
     function nextQuestion() {
         if (currentIndex < questions.length - 1) {
             currentIndex++;
@@ -144,25 +298,33 @@
     function updateControls() {
         document.getElementById('progress').innerText = `진행률: ${currentIndex + 1} / ${questions.length}`;
         document.getElementById('prevBtn').disabled = currentIndex === 0;
+        
         const isAnswered = answeredState[currentIndex]?.answered;
         const nextBtn = document.getElementById('nextBtn');
+        
         if (currentIndex === questions.length - 1) {
-            nextBtn.textContent = isAnswered ? '결과 보기' : '정답 확인 필요';
+            nextBtn.innerText = isAnswered ? '결과 보기' : '정답 확인 필요';
             nextBtn.disabled = !isAnswered;
         } else {
-            nextBtn.textContent = '다음 문제';
+            nextBtn.innerText = '다음 문제';
             nextBtn.disabled = false;
         }
     }
 
     function showResults() {
         const score = Object.values(answeredState).filter(s => s.correct).length;
-        document.getElementById('questionBox').innerHTML = `<h2>🎉 퀴즈 완료!</h2><p>총 ${questions.length} 문제 중 <b>${score}</b> 개 맞힘!</p>`;
+        document.getElementById('questionBox').innerHTML = `
+            <h2>🎉 퀴즈 완료!</h2>
+            <p style="font-size:1.2em; text-align:center;">
+                총 ${questions.length} 문제 중 <b>${score}</b> 개를 맞히셨습니다.
+            </p>
+        `;
         document.getElementById('prevBtn').style.display = 'none';
         document.getElementById('nextBtn').style.display = 'none';
         document.getElementById('retryBtn').style.display = 'block';
     }
 
+    // 초기 실행
     window.onload = startQuiz;
 </script>
 
